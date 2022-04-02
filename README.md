@@ -4,7 +4,9 @@
 
 Downloads node packages needed by React
 
-### `npm install react-router-dom --save`
+### `npm install -S react-router`
+
+### `npm install -S react-router-dom`
 
 Installs react router
 
