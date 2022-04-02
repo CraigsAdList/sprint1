@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router'
+import { Routes, Route } from 'react-router';
 import './App.css';
 import AdsPage from './pages/AdsPage';
 import ChannelsPage from './pages/ChannelsPage';
@@ -9,7 +9,6 @@ import NewAdPage from './pages/NewAdPage';
 import NewChannelPage from './pages/NewChannelPage';
 import NewResponsePage from './pages/NewResponsePage';
 import NewOfferPage from './pages/NewOfferPage';
-
 
 function App() {
   return (
