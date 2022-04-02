@@ -1,3 +1,4 @@
+import { BrowserRouter } from 'react-router-dom';
 import { Routes, Route } from 'react-router';
 import './App.css';
 import AdsPage from './pages/AdsPage';
@@ -12,7 +13,7 @@ import NewOfferPage from './pages/NewOfferPage';
 
 function App() {
   return (
-    <div>
+    <BrowserRouter>
       <Routes>
         <Route path="/" element={<AdsPage />} />
         <Route path="/channels" element={<ChannelsPage />} />
@@ -24,7 +25,7 @@ function App() {
         <Route path="/new_response" element={<NewResponsePage />} />
         <Route path="/new_offer" element={<NewOfferPage />} />
       </Routes>
-    </div>
+    </BrowserRouter>
   );
 }
 
