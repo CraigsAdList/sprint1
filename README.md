@@ -6,9 +6,11 @@ Downloads node packages needed by React
 
 ### `npm install -S react-router`
 
+Installs react router
+
 ### `npm install -S react-router-dom`
 
-Installs react router
+Installs react router dom
 
 ### `npm run build`
 
