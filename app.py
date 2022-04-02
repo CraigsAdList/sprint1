@@ -117,7 +117,4 @@ def make_offer():
 
 app.register_blueprint(bp)
 
-app.run(
-    host=os.getenv('IP', '127.0.0.1'),
-    port=int(os.getenv('PORT', 5000))
-)
+app.run(debug=True)
