@@ -1,0 +1,40 @@
+{
+    "extends": [
+        "airbnb",
+        "airbnb/hooks"
+    ],
+    "rules": {
+        // suppress errors for missing 'import React' in files
+        "react/react-in-jsx-scope": "off",
+        // allow jsx syntax in js files
+        "react/jsx-filename-extension": [
+            1,
+            {
+                "extensions": [
+                    ".js",
+                    ".jsx"
+                ]
+            }
+        ]
+    },
+    "overrides": [
+        {
+            //eslint cannot understand 'test' and 'expect' in test.js file
+            "files": [
+                "*.test.js"
+            ],
+            "rules": {
+                "no-undef": "off"
+            }
+        },
+        {
+            //eslint cannot understand 'document' in index.js file
+            "files": [
+                "*index.js"
+            ],
+            "rules": {
+                "no-undef": "off"
+            }
+        }
+    ]
+}
