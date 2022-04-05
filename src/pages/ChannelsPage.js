@@ -1,18 +1,82 @@
+import React, { fetch, useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+
+function ChannelItem(props) {
+  const { channel } = props;
+  const {
+    id, ownerId, showChannel, channelName, subscribers, topics, preferredReward,
+  } = channel;
+
+  function makeResponse() {
+
+  }
+
+  return (
+    <div>
+      {id}
+      {ownerId}
+      {showChannel}
+      {channelName}
+      {subscribers}
+      {topics}
+      {preferredReward}
+      <button type="button" onClick={makeResponse}>Respond</button>
+    </div>
+  );
+}
+// ChannelItem.defaultProps = {
+//   channel: PropTypes.shape({
+//     id: PropTypes.number,
+//     ownerId: PropTypes.number,
+//     showChannel: PropTypes.bool,
+//     channelName: PropTypes.string,
+//     subscribers: PropTypes.string,
+//     topics: PropTypes.arrayOf(PropTypes.string),
+//     preferredReward: PropTypes.number,
+//   }),
+// };
+ChannelItem.propTypes = {
+  channel: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    ownerId: PropTypes.number.isRequired,
+    showChannel: PropTypes.bool.isRequired,
+    channelName: PropTypes.string.isRequired,
+    subscribers: PropTypes.string.isRequired,
+    topics: PropTypes.arrayOf(PropTypes.string),
+    preferredReward: PropTypes.number,
+  }).isRequired,
+};
+
+function ListOfChannels() {
+  const [channels, setChannels] = useState(Array(0));
+
+  function getChannels() {
+    // fetch comments from database
+    fetch('/get_channels', {
+      method: 'GET',
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setChannels(data);
+      });
+  }
+
+  const listOfChannels = channels.map((channel) => <ChannelItem channel={channel} />);
+  useEffect(() => { getChannels(); }, []);
+  return (
+    <div>
+      Hi
+      {listOfChannels}
+    </div>
+  );
+}
+
 function ChannelsPage() {
   return (
     <div>
-      Welcome to the ChannelsPage!
-      <ul>
-        <li><a href="/">Go to AdsPage</a></li>
-        <li><a href="/channels">Go to ChannelsPage</a></li>
-        <li><a href="/login">Go to LoginPage</a></li>
-        <li><a href="/signup">Go to SignupPage</a></li>
-        <li><a href="/acount">Go to UserAccountPage</a></li>
-        <li><a href="/new_add">Go to NewAdPage</a></li>
-        <li><a href="/new_channel">Go to NewChannelPage</a></li>
-        <li><a href="/new_response">Go to NewResponsePage</a></li>
-        <li><a href="/new_offer">Go to NewOfferPage</a></li>
-      </ul>
+      {/* <MenuBar /> */}
+
+      <ListOfChannels />
     </div>
   );
 }
