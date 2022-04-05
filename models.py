@@ -14,7 +14,7 @@ class Account(UserMixin, db.Model):
     username = db.Column(db.String(128), index=True, unique=True)
     password = db.Column(db.String(128), index=True)
     email = db.Column(db.String(128), index=True, unique=True)
-    is_channel_owner = db.Column(db.Boolean, default=False)
+    channel_owner = db.Column(db.Boolean, default=False)
 
 
 class Ad(db.Model):
