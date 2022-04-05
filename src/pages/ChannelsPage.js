@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import fetch from 'node-fetch';
 
 function ChannelItem(props) {
   const { channel } = props;
@@ -14,46 +13,46 @@ function ChannelItem(props) {
 
   return (
     <div>
-      {id}
-      {ownerId}
-      {showChannel}
-      {channelName}
-      {subscribers}
-      {topics}
-      {preferredReward}
-      <button type="button" onClick={makeResponse}>Respond</button>
+      <p>{id}</p>
+      <p>{ownerId}</p>
+      <p>{showChannel}</p>
+      <p>{channelName}</p>
+      <p>{subscribers}</p>
+      <p>{topics}</p>
+      <p>{preferredReward}</p>
+      <p><button type="button" onClick={makeResponse}>Respond</button></p>
     </div>
   );
 }
-// ChannelItem.defaultProps = {
-//   channel: PropTypes.shape({
-//     id: PropTypes.number,
-//     ownerId: PropTypes.number,
-//     showChannel: PropTypes.bool,
-//     channelName: PropTypes.string,
-//     subscribers: PropTypes.string,
-//     topics: PropTypes.arrayOf(PropTypes.string),
-//     preferredReward: PropTypes.number,
-//   }),
-// };
+ChannelItem.defaultProps = {
+  channel: PropTypes.shape({
+    id: 0,
+    ownerId: 0,
+    showChannel: true,
+    channelName: '',
+    subscribers: 0,
+    topics: [''],
+    preferredReward: 0,
+  }),
+};
 ChannelItem.propTypes = {
   channel: PropTypes.shape({
     id: PropTypes.number.isRequired,
     ownerId: PropTypes.number.isRequired,
     showChannel: PropTypes.bool.isRequired,
     channelName: PropTypes.string.isRequired,
-    subscribers: PropTypes.string.isRequired,
+    subscribers: PropTypes.number.isRequired,
     topics: PropTypes.arrayOf(PropTypes.string),
     preferredReward: PropTypes.number,
-  }).isRequired,
+  }),
 };
 
 function ListOfChannels() {
   const [channels, setChannels] = useState(Array(0));
 
   function getChannels() {
-    // fetch comments from database
-    fetch('/get_channels', {
+    // fetch channels from database
+    fetch('/return_channels', {
       method: 'GET',
     })
       .then((response) => response.json())
@@ -66,7 +65,6 @@ function ListOfChannels() {
   useEffect(() => { getChannels(); }, []);
   return (
     <div>
-      Hi
       {listOfChannels}
     </div>
   );
