@@ -93,7 +93,23 @@ def return_ads():
 @bp.route("/return_channels", methods=["GET"])
 def return_channels():
     """Returns JSON with all channels"""
-    pass
+    channels = Channel.query.filter_by(show_channel=True).all()
+    channels_data = []
+    for channel in channels:
+        channel.topics = channel.topics.split(',')
+        channels_data.append(
+            {
+                "id": channel.id,
+                "ownerId": channel.owner_id,
+                "showChannel": channel.show_channel,
+                "channelName": channel.channel_name,
+                "subscribers": channel.subscribers,
+                "topics": channel.topics,
+                "preferredReward": channel.preferred_reward,
+            }
+        )
+    # trying to jsonify a list of channel objects gives an error
+    return flask.jsonify(channels_data)
 
 @bp.route("/add_channel", methods=["POST"])
 def add_channel():
@@ -116,5 +132,17 @@ def make_offer():
     pass
 
 app.register_blueprint(bp)
+
+# account = Account(id = 100000000, username = "test user", password = "password", email = "test@test.com", channel_owner = True)
+# # channel = Channel(id = 100000000, owner_id = 100000000, show_channel = True, channel_name = "test channel", subscribers = 100, topics = "test1,test2", preferred_reward = 100)
+# # ad = Ad(id = 100000000, creator_id = 100000000, title = "test ad", topics = "test1,test2", text = "test ad text", reward = 100, show_in_list = True)
+# with app.app_context():
+#     db.session.add(account)
+#     # db.session.add(channel)
+#     # db.session.add(ad)
+#     db.session.commit()
+#     Account.querry.asll()
+#     # Channel.query.all()
+#     # Ad.query.all()
 
 app.run(debug=True)
