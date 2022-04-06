@@ -88,12 +88,60 @@ def account_info():
 @bp.route("/return_ads", methods=["GET"])
 def return_ads():
     """Returns JSON with all ads"""
-    pass
+    args = flask.request.args
+    if args.get("for") == "adsPage":
+        # return channels for channels page
+        ads = Ad.query.filter_by(show_in_list=True).all()
+        ads_data = []
+        for advertisement in ads:
+            advertisement.topics = advertisement.topics.split(',')
+            ads_data.append(
+                {
+                    "id": advertisement.id,
+                    "creatorId": advertisement.creator_id,
+                    "title": advertisement.title,
+                    "topics": advertisement.topics,
+                    "text": advertisement.text,
+                    "reward": advertisement.reward,
+                    "showInList": advertisement.show_in_list,
+                }
+            )
+        # trying to jsonify a list of channel objects gives an error
+        return flask.jsonify({
+            "success": True,
+            "ads_data": ads_data,
+        })
+    return flask.jsonify({"success": False})
+
+
 
 @bp.route("/return_channels", methods=["GET"])
 def return_channels():
-    """Returns JSON with all channels"""
-    pass
+    """Returns JSON with channels"""
+    args = flask.request.args
+    if args.get("for") == "channelsPage":
+        # return channels for channels page
+        channels = Channel.query.filter_by(show_channel=True).all()
+        channels_data = []
+        for channel in channels:
+            channel.topics = channel.topics.split(',')
+            channels_data.append(
+                {
+                    "id": channel.id,
+                    "ownerId": channel.owner_id,
+                    "showChannel": channel.show_channel,
+                    "channelName": channel.channel_name,
+                    "subscribers": channel.subscribers,
+                    "topics": channel.topics,
+                    "preferredReward": channel.preferred_reward,
+                }
+            )
+        # trying to jsonify a list of channel objects gives an error
+        return flask.jsonify({
+            "success": True,
+            "channels_data": channels_data,
+        })
+    return flask.jsonify({"success": False})
 
 @bp.route("/add_channel", methods=["POST"])
 def add_channel():

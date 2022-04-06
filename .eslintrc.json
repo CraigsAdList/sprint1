@@ -36,5 +36,8 @@
                 "no-undef": "off"
             }
         }
-    ]
+    ],
+    "env": {
+        "browser": true
+    }
 }
