@@ -1,5 +1,5 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-console */
+/* eslint-disable react/jsx-one-expression-per-line */
+// Should probably enable localStorage, for now it is just sick
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
@@ -15,13 +15,13 @@ function ChannelItem(props) {
 
   return (
     <div>
-      <p>{id}</p>
-      <p>{ownerId}</p>
-      <p>{showChannel}</p>
-      <p>{channelName}</p>
-      <p>{subscribers}</p>
-      <p>{topics}</p>
-      <p>{preferredReward}</p>
+      <p>Channel id {id}</p>
+      <p>Channel owner id {ownerId}</p>
+      <p>Show in list flag {showChannel}</p>
+      <p>Channel name {channelName}</p>
+      <p>Number of subscribers {subscribers}</p>
+      <p>Topics {topics}</p>
+      <p>Preferred reward {preferredReward}</p>
       <p><button type="button" onClick={makeResponse}>Respond</button></p>
     </div>
   );
