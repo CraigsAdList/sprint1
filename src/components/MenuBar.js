@@ -9,8 +9,8 @@ function MenuBar() {
         <DropdownButton title="Menu" variant="secondary">
           <Dropdown.Item href="/">Go to AdsPage</Dropdown.Item>
           <Dropdown.Item href="/channels">Go to ChannelsPage</Dropdown.Item>
-          <Dropdown.Item href="/login">Go to LoginPage</Dropdown.Item>
-          <Dropdown.Item href="/signup">Go to SignupPage</Dropdown.Item>
+          <Dropdown.Item href="/handle_login">Go to LoginPage</Dropdown.Item>
+          <Dropdown.Item href="/handle_signup">Go to SignupPage</Dropdown.Item>
           <Dropdown.Item href="/acount">Go to UserAccountPage</Dropdown.Item>
           <Dropdown.Item href="/new_add">Go to NewAdPage</Dropdown.Item>
           <Dropdown.Item href="/new_channel">Go to NewChannelPage</Dropdown.Item>

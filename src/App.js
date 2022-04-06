@@ -16,10 +16,10 @@ function App() {
     <div>
       <MenuBar />
       <Routes>
-        <Route path="/" element={<AdsPage />} />
+        <Route path="/ads" element={<AdsPage />} />
         <Route path="/channels" element={<ChannelsPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/handle_login" element={<LoginPage />} />
+        <Route path="/handle_signup" element={<SignupPage />} />
         <Route path="/acount" element={<UserAccountPage />} />
         <Route path="/new_add" element={<NewAdPage />} />
         <Route path="/new_channel" element={<NewChannelPage />} />
