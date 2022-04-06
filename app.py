@@ -10,6 +10,10 @@ import flask
 
 from flask_login import current_user, login_user, logout_user, LoginManager
 
+from flask import render_template
+
+from werkzeug import generate_password_hash, check_password_hash
+
 from dotenv import load_dotenv, find_dotenv
 
 from models import db, Account, Ad, Channel
@@ -63,12 +67,42 @@ def index():
 @bp.route("/handle_login", methods=["POST"])
 def handle_login():
     """Handle login"""
-    pass
-
+    if flask.request.method == "POST":
+        data = flask.request.form
+        user = Account.query.filter_by(email=data["email"]).first()
+        if user and check_password_hash(user.password, data["password"]):
+            login_user(user)
+            return flask.redirect(flask.url_for("index"))
+        #if password is incorrect
+        elif not check_password_hash(user.password, data["password"]):
+            flask.flash("Incorrect password")
+        #if the email is NOT present in the database, send a message saying “there is no user with this email” 
+        #and give a link to sign up page
+        elif not user:
+            flask.flash("No user with this email")
+            return flask.redirect(flask.url_for("signup"))
+    return render_template("login.html")
+    
 @bp.route("/handle_signup", methods=["POST"])
 def handle_signup():
     """Handle signup"""
-    pass
+    if flask.request.method == "POST":
+        data = flask.request.form
+        u = Account.query.filter_by(username=data["username"]).first()
+        if u is None:
+            user = Account(
+                username=data["username"],
+                email=data["email"],
+                password=generate_password_hash(data["password"]),
+            )
+            db.session.add(user)
+            db.session.commit()
+            return flask.redirect(flask.url_for("login"))
+        elif data["username"] == "" or data["email"] == "" or data["password"] == "":
+            flask.flash("Fill in all the required data")
+        elif u is not None:
+            flask.flash("A user with such username/email already exists")
+    return render_template("signup.html")
 
 @bp.route("/handle_logout", methods=["POST"])
 def handle_logout():
