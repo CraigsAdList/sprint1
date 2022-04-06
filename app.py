@@ -107,7 +107,6 @@ def return_ads():
                 }
             )
         # trying to jsonify a list of channel objects gives an error
-        print(ads_data)
         return flask.jsonify({
             "success": True,
             "ads_data": ads_data,
