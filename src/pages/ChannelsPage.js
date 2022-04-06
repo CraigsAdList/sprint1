@@ -17,7 +17,7 @@ function ChannelItem(props) {
     <div>
       <p>Channel id {id}</p>
       <p>Channel owner id {ownerId}</p>
-      <p>Show in list flag {showChannel}</p>
+      <p>Show channel flag {showChannel}</p>
       <p>Channel name {channelName}</p>
       <p>Number of subscribers {subscribers}</p>
       <p>Topics {topics}</p>
