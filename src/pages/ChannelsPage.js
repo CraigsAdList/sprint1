@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-console */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
@@ -52,12 +54,16 @@ function ListOfChannels() {
 
   function getChannels() {
     // fetch channels from database
-    fetch('/return_channels', {
+    fetch('/return_channels?for=channelsPage', {
       method: 'GET',
     })
       .then((response) => response.json())
       .then((data) => {
-        setChannels(data);
+        if (data.success) {
+          setChannels(data.channels_data);
+        } else {
+          throw new Error('Error while fetching channels data');
+        }
       });
   }
 
