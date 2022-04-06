@@ -165,16 +165,4 @@ def make_offer():
 
 app.register_blueprint(bp)
 
-# account = Account(id = 100000000, username = "test user", password = "password", email = "test@test.com", channel_owner = True)
-# # channel = Channel(id = 100000000, owner_id = 100000000, show_channel = True, channel_name = "test channel", subscribers = 100, topics = "test1,test2", preferred_reward = 100)
-# # ad = Ad(id = 100000000, creator_id = 100000000, title = "test ad", topics = "test1,test2", text = "test ad text", reward = 100, show_in_list = True)
-# with app.app_context():
-#     db.session.add(account)
-#     # db.session.add(channel)
-#     # db.session.add(ad)
-#     db.session.commit()
-#     Account.querry.asll()
-#     # Channel.query.all()
-#     # Ad.query.all()
-
 app.run(debug=True)
