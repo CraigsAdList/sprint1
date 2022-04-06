@@ -1,5 +1,5 @@
 import { Dropdown, DropdownButton } from 'react-bootstrap';
-import classes from './MenuBar.module.css';
+import classes from './css/MenuBar.module.css';
 
 function MenuBar() {
   return (

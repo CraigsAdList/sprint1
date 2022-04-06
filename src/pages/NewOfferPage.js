@@ -1,7 +1,43 @@
+// import { useNavigate } from 'react-router';
+// import { useCallback, useEffect, useState } from 'react';
+// import LoginErrorDialog from '../components/ui/LoginErrorDialog';
+
 function NewOfferPage() {
+  // Uncomment this code when Backend code is ready
+
+  /* const navigate = useNavigate();
+  const [IsErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
+
+  const hideCloseHandler = useCallback(() => setIsErrorDialogOpen(false), []);
+  const navigateBackToLogin = useCallback(() => navigate('/login'), [navigate]);
+  console.log(typeof (hideCloseHandler));
+
+  function isUserLoggedIn() {
+    fetch('/is_logged_in', {
+      method: 'GET',
+    }).then((reponse) => reponse.json().then((data) => {
+      if (data.isuserloggedin === false) {
+        setIsErrorDialogOpen(true);
+        // console.log('not logged in');
+        // navigate('/login', { state: { error: 'not_logged_in' } });
+      }
+    }));
+  }
+
+  useEffect(() => {
+    isUserLoggedIn();
+  }, []);
+
   return (
     <div>
-      Welcome to the NewOfferPage!
+      {IsErrorDialogOpen && <LoginErrorDialog message="User isn't logged in."
+      onCancel={hideCloseHandler} onRedirect={navigateBackToLogin} />}
+    </div>
+  ); */
+
+  return (
+    <div>
+      Welcome to the LoginPage!
       <ul>
         <li><a href="/">Go to AdsPage</a></li>
         <li><a href="/channels">Go to ChannelsPage</a></li>

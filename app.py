@@ -12,7 +12,7 @@ from flask_login import current_user, login_user, logout_user, LoginManager
 
 from flask import render_template
 
-from werkzeug import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from dotenv import load_dotenv, find_dotenv
 
