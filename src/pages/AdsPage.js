@@ -1,16 +1,18 @@
 /* eslint-disable react/jsx-one-expression-per-line */
-// Should probably enable localStorage, for now it is just sick
+// Should probably enable later, for now it is just useless
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 
 function AdItem(props) {
   const { ad } = props;
   const {
     id, creatorId, title, topics, text, reward, showInList,
   } = ad;
+  const navigate = useNavigate();
 
-  function makeOffer() {
-
+  function makeResponse() {
+    navigate('/new_response', { state: id });
   }
 
   return (
@@ -22,7 +24,7 @@ function AdItem(props) {
       <p>Text {text}</p>
       <p>Reward {reward}</p>
       <p>Show in list flag {showInList}</p>
-      <p><button type="button" onClick={makeOffer}>Make an offer</button></p>
+      <p><button type="button" onClick={makeResponse}>Respond</button></p>
     </div>
   );
 }
