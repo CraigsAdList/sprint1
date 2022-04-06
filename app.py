@@ -164,3 +164,5 @@ def make_offer():
     pass
 
 app.register_blueprint(bp)
+
+app.run()
