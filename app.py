@@ -36,7 +36,7 @@ login_manager.init_app(app)
 def load_user(user_id):
     """Stolen from some tutorial on flask-login. While it is not explicitly used
     here, it is required by flask-login"""
-    return Account.query.get(int(id))
+    return Account.query.get(int(user_id))
 
 # set up a separate route to serve the index.html file generated
 # by create-react-app/npm run build.
@@ -68,20 +68,17 @@ def index():
 def handle_login():
     """Handle login"""
     if flask.request.method == "POST":
-        data = flask.request.form
-        user = Account.query.filter_by(email=data["email"]).first()
-        if user and check_password_hash(user.password, data["password"]):
-            login_user(user)
-            return flask.redirect(flask.url_for("index"))
+        user = Account.query.filter_by(email=flask.request.json["email"]).first()
+        if user!=None and check_password_hash(user.password, flask.request.json["password"]):
+            is_login_successful = login_user(user)
+            return flask.jsonify({"is_login_successful": is_login_successful, "error_message": ""})
         #if password is incorrect
-        elif not check_password_hash(user.password, data["password"]):
-            flask.flash("Incorrect password")
+        elif user!=None and not check_password_hash(user.password, flask.request.json["password"]):
+            return flask.jsonify({"is_login_successful": False, "error_message": "Incorrect password"})
         #if the email is NOT present in the database, send a message saying “there is no user with this email” 
         #and give a link to sign up page
-        elif not user:
-            flask.flash("No user with this email")
-            return flask.redirect(flask.url_for("signup"))
-    return render_template("login.html")
+        elif user == None:
+            return flask.jsonify({"is_login_successful": False, "error_message": "No user with this email"})
     
 @bp.route("/handle_signup", methods=["POST"])
 def handle_signup():
@@ -97,12 +94,13 @@ def handle_signup():
             )
             db.session.add(user)
             db.session.commit()
-            return flask.redirect(flask.url_for("login"))
+            is_signup_successful = Account.query.filter_by(email=data["email"]).first()
+            return flask.jsonify({"is_signup_successful": is_signup_successful, "error_message": ""})
         elif data["username"] == "" or data["email"] == "" or data["password"] == "":
-            flask.flash("Fill in all the required data")
+            return flask.jsonify({"is_signup_successful": False, "error_message": "Fill in all the required data"})
         elif u is not None:
-            flask.flash("A user with such username/email already exists")
-    return render_template("signup.html")
+            return flask.jsonify({"is_signup_successful": False, "error_message": "A user with such username/email already exists"})
+
 
 @bp.route("/handle_logout", methods=["POST"])
 def handle_logout():
