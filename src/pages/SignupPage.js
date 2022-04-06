@@ -1,19 +1,42 @@
 function SignupPage() {
+  //send the form data back to the server to create a new user
+  function handleSubmit(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const data = {};
+    formData.forEach((value, key) => {
+      data[key] = value;
+    });
+    fetch('/signup', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          window.location.href = '/';
+        } else {
+          alert(data.message);
+        }
+      });
+  }
+
   return (
-    <div>
-      Welcome to the SignupPage!
-      <ul>
-        <li><a href="/">Go to AdsPage</a></li>
-        <li><a href="/channels">Go to ChannelsPage</a></li>
-        <li><a href="/login">Go to LoginPage</a></li>
-        <li><a href="/signup">Go to SignupPage</a></li>
-        <li><a href="/acount">Go to UserAccountPage</a></li>
-        <li><a href="/new_add">Go to NewAdPage</a></li>
-        <li><a href="/new_channel">Go to NewChannelPage</a></li>
-        <li><a href="/new_response">Go to NewResponsePage</a></li>
-        <li><a href="/new_offer">Go to NewOfferPage</a></li>
-      </ul>
-    </div>
+    <form>
+      <div>
+        <center>
+          <h1>Signup</h1>
+          Username:<input type="text" name="username" placeholder="username"></input>
+          Email:<input type="text" name="email" placeholder="email"></input>
+          Password:<input type="text" name="password" placeholder="password"></input>
+          Are you a channel owner?<input type="checkbox" name="channel_owner"></input>
+          <button onClick={handleSubmit}>Signup</button>
+        </center>
+      </div>
+    </form>
   );
 }
 
