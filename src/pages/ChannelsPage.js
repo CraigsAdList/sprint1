@@ -67,8 +67,8 @@ function ListOfChannels() {
       });
   }
 
-  const listOfChannels = channels.map((channel) => <ChannelItem channel={channel} />);
   useEffect(() => { getChannels(); }, []);
+  const listOfChannels = channels.map((channel) => <ChannelItem channel={channel} />);
   return (
     <div>
       {listOfChannels}
