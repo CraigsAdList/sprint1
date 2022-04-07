@@ -14,7 +14,7 @@ class Account(UserMixin, db.Model):
     username = db.Column(db.String(128), index=True, unique=True)
     password = db.Column(db.String(128), index=True)
     email = db.Column(db.String(128), index=True, unique=True)
-    is_channel_owner = db.Column(db.Boolean, default=False)
+    channel_owner = db.Column(db.Boolean, default=False)
 
 
 class Ad(db.Model):
@@ -22,7 +22,7 @@ class Ad(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     creator_id = db.Column(db.Integer, db.ForeignKey("account.id"))
     title = db.Column(db.String(128))
-    topics = db.Column(db.String(128))
+    topics = db.Column(db.String(128)) #CSV
     text = db.Column(db.String(128))
     reward = db.Column(db.Integer)
     show_in_list = db.Column(db.Boolean, default=False)
@@ -35,5 +35,5 @@ class Channel(db.Model):
     show_channel = db.Column(db.Boolean, default=False)
     channel_name = db.Column(db.String(128), index=True, unique=True)
     subscribers = db.Column(db.Integer, default=0)
-    topics = db.Column(db.String(128), index=True, unique=True)
+    topics = db.Column(db.String(128), index=True, unique=True) #CSV
     preferred_reward = db.Column(db.String(128), index=True, unique=True)
