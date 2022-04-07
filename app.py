@@ -10,7 +10,7 @@ import flask
 
 from flask_login import current_user, login_user, logout_user, LoginManager
 
-from flask import render_template
+from flask import render_template, request
 
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -140,7 +140,10 @@ def handle_logout():
 @bp.route("/is_logged_in", methods=["GET"])
 def is_logged_in():
     """Check if user is logged in"""
-    pass
+    if current_user.is_authenticated:
+        return flask.jsonify({"is_logged_in": True})
+    else:
+        return flask.jsonify({"is_logged_in": False})
 
 
 @bp.route("/account_info", methods=["GET"])
@@ -194,8 +197,19 @@ def add_channel():
 
 @bp.route("/add_ad", methods=["POST"])
 def add_ad():
-    """Add ad info to database"""
-    pass
+    if request.method == "POST":
+        data = flask.request.form
+        ad = Ad(
+            title=data["title"],
+            description=data["description"],
+            owner_id=data["ownerId"],
+            channel_id=data["channelId"],
+            reward=data["reward"],
+            topic=data["topic"],
+        )
+        db.session.add(ad)
+        db.session.commit()
+        return flask.jsonify({"success": True})
 
 
 @bp.route("/make_response", methods=["POST"])
