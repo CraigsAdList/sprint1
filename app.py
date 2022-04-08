@@ -200,11 +200,11 @@ def add_ad():
         data = flask.request.form
         ad = Ad(
             title=data["title"],
-            description=data["description"],
-            owner_id=data["ownerId"],
+            text=data["text"],
+            ownerId=data["ownerId"],
             channel_id=data["channelId"],
             reward=data["reward"],
-            topic=data["topic"],
+            topics=data["topics"],
         )
         db.session.add(ad)
         db.session.commit()

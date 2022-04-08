@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router';
 import { useState, useEffect, useCallback } from 'react';
 import LoginErrorDialog from '../components/ui/LoginErrorDialog';
+
 function NewAdPage() {
   const navigate = useNavigate();
   const [IsErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
@@ -22,7 +23,27 @@ function NewAdPage() {
   useEffect(() => {
     isUserLoggedIn();
   }, []);
+  function add_ads(){
+    fetch('/add_ads', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        title: 'title',
+        topics: 'topics',
+        text: 'text',
+        reward: 'reward',
+       
+      }),
+    }).then((reponse) => reponse.json().then((data) => {
+      if (data.isuserloggedin === false) {
+        setIsErrorDialogOpen(true);
+      }
+    }));
+    
 
+  }
 
 
   return (
@@ -35,6 +56,16 @@ function NewAdPage() {
         
       />
       )}
+      <input type = "text" placeholder = "title" />
+      <input type = "text" placeholder = "topics" />
+      <input type = "text" placeholder = "text" />
+      <input type = "text" placeholder = "reward" />
+      <input type = "checkbox" placeholder = "show my ads" />
+      <button onClick = {add_ads}>Add</button>
+    
+
+
+
        Welcome to the New Ad Page!
       <ul>
         <li><a href="/">Go to AdsPage</a></li>
@@ -50,5 +81,6 @@ function NewAdPage() {
     </div>
   )
 }
+
 
 export default NewAdPage;
