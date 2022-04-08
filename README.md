@@ -1,19 +1,13 @@
+## Heroku link
+
+https://young-plateau-34047.herokuapp.com/
+
 ## Step to run for first time
 
-### `npm ci`
+### `pip install -r requirements.txt` - install python packages
 
-Downloads node packages needed by React
+### `npm ci` - install node modules
 
-### `npm install -S react-router`
+### `npm run build` - build frontend side
 
-Installs react router
-
-### `npm install -S react-router-dom`
-
-Installs react router dom
-
-### `npm run build`
-
-Builds react project
-
-**Then run app.py in the terminal to launch flask server**
+**Then run `python app.py` or `gunicorn app:app` in the terminal to launch**
