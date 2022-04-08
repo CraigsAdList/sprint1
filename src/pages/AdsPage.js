@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 // Should probably enable later, for now it is just useless
-import React, { useState, useEffect } from 'react';
+// import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 
@@ -51,10 +51,10 @@ AdItem.propTypes = {
   }),
 };
 
-function ListOfAds() {
-  const [ads, setAds] = useState(Array(0));
+/* function ListOfAds() {
+  // const [ads, setAds] = useState(Array(0));
 
-  function getAds() {
+   function getAds() {
     // fetch ads from database
     fetch('/return_ads?for=adsPage', {
       method: 'GET',
@@ -69,23 +69,23 @@ function ListOfAds() {
           throw new Error('Error while fetching ads data');
         }
       });
-  }
+} */
 
-  useEffect(() => { getAds(); }, []);
+/* useEffect(() => { getAds(); }, []);
   const listOfAds = ads.map((ad) => <AdItem ad={ad} />);
   return (
     <div>
       {listOfAds}
     </div>
   );
-}
+} */
 
 function AdsPage() {
   return (
     <div>
       {/* <MenuBar /> */}
 
-      <ListOfAds />
+      {/* <ListOfAds /> */}
 
       {/* Should delete it later */}
       <div>

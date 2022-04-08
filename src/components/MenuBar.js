@@ -1,15 +1,18 @@
 import { useNavigate } from 'react-router';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import classes from './css/MenuBar.module.css';
 import LoginErrorDialog from './ui/LoginErrorDialog';
+import MenuNavigation from './MenuNavigation';
 
 function MenuBar() {
   const navigate = useNavigate();
   const [IsErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [RedirectFunction, setRedirectFunction] = useState({});
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  const navigateToAdsPage = useCallback(() => navigate('/'), [navigate]);
   const navigateBackToLogin = useCallback(() => navigate('/login'), [navigate]);
   const hideCloseHandler = useCallback(() => setIsErrorDialogOpen(false), []);
 
@@ -27,21 +30,39 @@ function MenuBar() {
       }
     }));
   }, [navigateBackToLogin]);
+
+  function isUserLoggedIn() {
+    fetch('/is_logged_in', {
+      method: 'GET',
+    }).then((reponse) => reponse.json().then((data) => {
+      setIsLoggedIn(data.isuserloggedin);
+    }));
+  }
+
+  useEffect(() => {
+    isUserLoggedIn();
+  }, []);
+
   return (
     <div>
       <header className={classes.header}>
-        <div className={classes.logo}>CraigsAdList</div>
+        <button type="button" className={classes.logo} onClick={navigateToAdsPage}>CraigsAdList</button>
         <DropdownButton title="Menu" variant="secondary">
-          <Dropdown.Item href="/">Go to AdsPage</Dropdown.Item>
-          <Dropdown.Item href="/channels">Go to ChannelsPage</Dropdown.Item>
-          <Dropdown.Item href="/login">Go to LoginPage</Dropdown.Item>
-          <Dropdown.Item href="/signup">Go to SignupPage</Dropdown.Item>
-          <Dropdown.Item href="/acount">Go to UserAccountPage</Dropdown.Item>
-          <Dropdown.Item href="/new_add">Go to NewAdPage</Dropdown.Item>
-          <Dropdown.Item href="/new_channel">Go to NewChannelPage</Dropdown.Item>
-          <Dropdown.Item href="/new_response">Go to NewResponsePage</Dropdown.Item>
-          <Dropdown.Item href="/new_offer">Go to NewOfferPage</Dropdown.Item>
-          <Dropdown.Item onClick={logOut}>Log out</Dropdown.Item>
+          {!isLoggedIn && (
+          <div>
+            <Dropdown.Item>Not Logged In</Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Item href="/login">Log In</Dropdown.Item>
+            <Dropdown.Item href="/signup">Sign Up</Dropdown.Item>
+          </div>
+          )}
+          {isLoggedIn && (
+          <div>
+            <MenuNavigation />
+            <Dropdown.Divider />
+            <Dropdown.Item onClick={logOut}>Log out</Dropdown.Item>
+          </div>
+          )}
         </DropdownButton>
 
       </header>

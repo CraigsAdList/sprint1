@@ -7,10 +7,13 @@
     padding: 2rem;
 }
 
+
 .logo {
     font-size: 1.5rem;
     font: Helvetica, sans-serif;
     color: black;
+    background-color: transparent;
+    border-color: transparent;
 
 }
 

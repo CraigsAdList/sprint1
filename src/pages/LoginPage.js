@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-// import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import LoginErrorDialog from '../components/ui/LoginErrorDialog';
 
 function LoginPage() {
@@ -8,10 +8,10 @@ function LoginPage() {
   const [passwordText, setPasswordText] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const hideErrorDialog = useCallback(() => setIsErrorDialogOpen(false), []);
-  // const redirect = useCallback(() => navigate('/new_offer'));
+  const navigateToAdsPage = useCallback(() => navigate('/'), [navigate]);
 
   function setEmail(text) {
     setemailText(text.target.value);
@@ -56,6 +56,7 @@ function LoginPage() {
       <LoginErrorDialog
         message={errorMessage}
         onCancel={hideErrorDialog}
+        onRedirect={navigateToAdsPage}
 
       />
       )}
