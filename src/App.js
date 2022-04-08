@@ -1,4 +1,3 @@
-import { BrowserRouter } from 'react-router-dom';
 import { Routes, Route } from 'react-router';
 import './App.css';
 import AdsPage from './pages/AdsPage';
@@ -14,7 +13,7 @@ import MenuBar from './components/MenuBar';
 
 function App() {
   return (
-    <BrowserRouter>
+    <div>
       <MenuBar />
       <Routes>
         <Route path="/" element={<AdsPage />} />
@@ -27,7 +26,7 @@ function App() {
         <Route path="/new_response" element={<NewResponsePage />} />
         <Route path="/new_offer" element={<NewOfferPage />} />
       </Routes>
-    </BrowserRouter>
+    </div>
   );
 }
 

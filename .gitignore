@@ -23,6 +23,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+/.vscode
 .env
 .python-version
 __pycache__
+

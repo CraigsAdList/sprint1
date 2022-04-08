@@ -10,6 +10,15 @@ function NewOfferPage() {
     <div>
       <p>Id of the channel {state} </p>
       Welcome to the NewOfferPage!
+      <div>
+        <div>Channel Info:</div>
+        <div>Channel Name:</div>
+        <div>Number of Subscribers:</div>
+        <div>Topic:</div>
+        <div>Prefered Contact:</div>
+        <div>Prederred price of ads:</div>
+        <div>Message (optional):</div>
+      </div>
       <ul>
         <li><a href="/">Go to AdsPage</a></li>
         <li><a href="/channels">Go to ChannelsPage</a></li>
