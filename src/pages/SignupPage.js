@@ -42,7 +42,12 @@ function LoginPage() {
       const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: usernameText, email: emailText, password: passwordText, channel_owner: channelChecked }),
+        body: JSON.stringify({
+          username: usernameText,
+          email: emailText,
+          password: passwordText,
+          channel_owner: channelChecked,
+        }),
       };
       fetch('/handle_signup', requestOptions).then((reponse) => reponse.json().then((data) => {
         if (data.is_signup_successful === true) {
