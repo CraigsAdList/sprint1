@@ -2,7 +2,7 @@ function UserAccountPage() {
   /*  const [account, setAccount] = useState();
     const [ads, setAds] = useState([]);
     const [channels, setChannels] = useState([]); 8/
-  
+
     useEffect(() => {
       fetch('/account_info', { method: 'POST' })
         .then(((response) => response.json()
@@ -13,7 +13,7 @@ function UserAccountPage() {
           })
         ));
     }, [setAccount, setAds, setChannels])
-  
+
     /* function handleAdDelete(i) {
       setAds(...ads.splice(0, i), ...ads.splice(i + 1));
     } */
