@@ -40,16 +40,12 @@ function MenuBar() {
     }).then((reponse) => reponse.json().then((data) => {
       setIsLoggedIn(data.isuserloggedin);
       if (!data.isuserloggedin && location.pathname !== '/login' && location.pathname !== '/signup') {
-        setErrorMessage("User isn't Logged in");
+        setErrorMessage('User is Logged out');
         setRedirectFunction(navigateBackToLogin);
         setIsErrorDialogOpen(true);
       }
     }));
-  // need to disable linting here because useEffect would loop indefinitely
-  // and slow down performance
-  //
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  });
 
   return (
     <div>
