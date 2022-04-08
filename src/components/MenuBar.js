@@ -56,24 +56,30 @@ function MenuBar() {
       <header className={classes.header}>
         {isLoggedIn && <button type="button" className={classes.logo} onClick={navigateToAdsPage}>CraigsAdList</button>}
         {!isLoggedIn && <div className={classes.logo}>CraigsAdList</div>}
-        <DropdownButton title="Menu" variant="secondary">
-          {!isLoggedIn && (
-          <div>
-            <Dropdown.Item>Not Logged In</Dropdown.Item>
-            <Dropdown.Divider />
-            <Dropdown.Item href="/login">Log In</Dropdown.Item>
-            <Dropdown.Item href="/signup">Sign Up</Dropdown.Item>
-          </div>
-          )}
-          {isLoggedIn && (
-          <div>
-            <MenuNavigation />
-            <Dropdown.Divider />
-            <Dropdown.Item onClick={logOut}>Log out</Dropdown.Item>
-          </div>
-          )}
-        </DropdownButton>
 
+        <div>
+          <span className={classes.menu}>
+            <a href="/new_add">+</a>
+            <DropdownButton title="Menu" variant="secondary">
+              {!isLoggedIn && (
+              <div>
+                <Dropdown.Item>Not Logged In</Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Item href="/login">Log In</Dropdown.Item>
+                <Dropdown.Item href="/signup">Sign Up</Dropdown.Item>
+              </div>
+              )}
+              {isLoggedIn && (
+              <div>
+                <MenuNavigation />
+                <Dropdown.Divider />
+                <Dropdown.Item onClick={logOut}>Log out</Dropdown.Item>
+              </div>
+              )}
+            </DropdownButton>
+
+          </span>
+        </div>
       </header>
       {IsErrorDialogOpen && (
       <LoginErrorDialog

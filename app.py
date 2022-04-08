@@ -39,6 +39,7 @@ def load_user(user_id):
     here, it is required by flask-login"""
     return Account.query.get(int(user_id))
 
+
 # set up a separate route to serve the index.html file generated
 # by create-react-app/npm run build.
 # By doing this, we make it so you can paste in all your old app routes
@@ -106,17 +107,35 @@ def handle_signup():
                 username=flask.request.json["username"],
                 email=flask.request.json["email"],
                 password=generate_password_hash(flask.request.json["password"]),
-                channel_owner=flask.request.json["channel_owner"]
+                channel_owner=flask.request.json["channel_owner"],
             )
             db.session.add(user)
             db.session.commit()
-            new_user = Account.query.filter_by(email=flask.request.json["email"]).first()
+            new_user = Account.query.filter_by(
+                email=flask.request.json["email"]
+            ).first()
             is_signup_successful = new_user is not None
-            return flask.jsonify({"is_signup_successful": is_signup_successful, "error_message": ""})
-        elif flask.request.json["username"] == "" or flask.request.json["email"] == "" or flask.request.json["password"] == "":
-            return flask.jsonify({"is_signup_successful": False, "error_message": "Fill in all the required data"})
+            return flask.jsonify(
+                {"is_signup_successful": is_signup_successful, "error_message": ""}
+            )
+        elif (
+            flask.request.json["username"] == ""
+            or flask.request.json["email"] == ""
+            or flask.request.json["password"] == ""
+        ):
+            return flask.jsonify(
+                {
+                    "is_signup_successful": False,
+                    "error_message": "Fill in all the required data",
+                }
+            )
         elif u is not None:
-            return flask.jsonify({"is_signup_successful": False, "error_message": "A user with such username/email already exists"})
+            return flask.jsonify(
+                {
+                    "is_signup_successful": False,
+                    "error_message": "A user with such username/email already exists",
+                }
+            )
 
 
 @bp.route("/handle_logout", methods=["POST"])

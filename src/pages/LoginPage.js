@@ -13,7 +13,7 @@ function LoginPage() {
   const navigate = useNavigate();
 
   const hideErrorDialog = useCallback(() => setIsErrorDialogOpen(false), []);
-  const navigateToAdsPage = useCallback(() => (IsErrorDialogOpen ? navigate('/') : null), [navigate, IsErrorDialogOpen]);
+  const navigateToAdsPage = useCallback(() => navigate('/'), [navigate]);
 
   function setEmail(text) {
     setemailText(text.target.value);
