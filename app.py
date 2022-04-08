@@ -12,6 +12,8 @@ from flask_login import current_user, login_user, logout_user, LoginManager
 
 from flask import render_template, request
 
+from db_utils import createAd, deleteAllAds, getAdsByOwnerEmail, getAllAccounts, getAllAds
+
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from dotenv import load_dotenv, find_dotenv
@@ -27,6 +29,7 @@ app.secret_key = os.getenv("SECRET_KEY")
 
 db.init_app(app)
 with app.app_context():
+    
     db.create_all()
 
 login_manager = LoginManager()
@@ -49,6 +52,7 @@ bp = flask.Blueprint(
     __name__,
     template_folder="./static/react",
 )
+
 
 # route for serving React page
 @bp.route("/")
@@ -101,21 +105,28 @@ def handle_login():
 def handle_signup():
     """Handle signup"""
     if flask.request.method == "POST":
-        data = flask.request.form
-        u = Account.query.filter_by(username=data["username"]).first()
+        u = Account.query.filter_by(username=flask.request.json["username"]).first()
         if u is None:
             user = Account(
-                username=data["username"],
-                email=data["email"],
-                password=generate_password_hash(data["password"]),
+                username=flask.request.json["username"],
+                email=flask.request.json["email"],
+                password=generate_password_hash(flask.request.json["password"]),
+                channel_owner=flask.request.json["channel_owner"],
             )
             db.session.add(user)
             db.session.commit()
-            is_signup_successful = Account.query.filter_by(email=data["email"]).first()
+            new_user = Account.query.filter_by(
+                email=flask.request.json["email"]
+            ).first()
+            is_signup_successful = new_user is not None
             return flask.jsonify(
                 {"is_signup_successful": is_signup_successful, "error_message": ""}
             )
-        elif data["username"] == "" or data["email"] == "" or data["password"] == "":
+        elif (
+            flask.request.json["username"] == ""
+            or flask.request.json["email"] == ""
+            or flask.request.json["password"] == ""
+        ):
             return flask.jsonify(
                 {
                     "is_signup_successful": False,
@@ -133,9 +144,12 @@ def handle_signup():
 
 @bp.route("/handle_logout", methods=["POST"])
 def handle_logout():
-    """Handle logout"""
-    pass
+    logout_user()
+    return is_logged_in()
 
+@app.route("/getaccounts", methods=["GET"])
+def getAccounts():
+    return flask.jsonify({"accounts":getAllAccounts()})
 
 @bp.route("/is_logged_in", methods=["GET"])
 def is_logged_in():
@@ -153,8 +167,7 @@ def account_info():
 
 @bp.route("/return_ads", methods=["GET"])
 def return_ads():
-    """Returns JSON with all ads"""
-    pass
+    return flask.jsonify({"ads": getAllAds()})
 
 
 @bp.route("/return_channels", methods=["GET"])
@@ -268,17 +281,5 @@ def make_offer():
 
 
 app.register_blueprint(bp)
-
-# account = Account(id = 100000000, username = "test user", password = "password", email = "test@test.com", channel_owner = True)
-# # channel = Channel(id = 100000000, owner_id = 100000000, show_channel = True, channel_name = "test channel", subscribers = 100, topics = "test1,test2", preferred_reward = 100)
-# # ad = Ad(id = 100000000, creator_id = 100000000, title = "test ad", topics = "test1,test2", text = "test ad text", reward = 100, show_in_list = True)
-# with app.app_context():
-#     db.session.add(account)
-#     # db.session.add(channel)
-#     # db.session.add(ad)
-#     db.session.commit()
-#     Account.querry.asll()
-#     # Channel.query.all()
-#     # Ad.query.all()
 
 app.run(debug=True)

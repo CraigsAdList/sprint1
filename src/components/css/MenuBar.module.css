@@ -5,12 +5,15 @@
     justify-content: space-between;
     background-color: #c4c4c4;
     padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .logo {
     font-size: 1.5rem;
     font: Helvetica, sans-serif;
     color: black;
+    background-color: transparent;
+    border-color: transparent;
 
 }
 
@@ -28,4 +31,12 @@
     font-size: 1.5rem;
     font: Helvetica, sans-serif;
     color: white;
+}
+
+.menu {
+    display: flex;
+}
+
+.menu > *{
+    margin: 0.5rem;
 }

@@ -1,16 +1,18 @@
 /* eslint-disable react/jsx-one-expression-per-line */
-// Should probably enable localStorage, for now it is just sick
+// Should probably enable later, for now it is just useless
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 
 function ChannelItem(props) {
   const { channel } = props;
   const {
     id, ownerId, showChannel, channelName, subscribers, topics, preferredReward,
   } = channel;
+  const navigate = useNavigate();
 
-  function makeResponse() {
-
+  function makeOffer() {
+    navigate('/new_offer', { state: id });
   }
 
   return (
@@ -22,7 +24,7 @@ function ChannelItem(props) {
       <p>Number of subscribers {subscribers}</p>
       <p>Topics {topics}</p>
       <p>Preferred reward {preferredReward}</p>
-      <p><button type="button" onClick={makeResponse}>Respond</button></p>
+      <p><button type="button" onClick={makeOffer}>Make an offer</button></p>
     </div>
   );
 }

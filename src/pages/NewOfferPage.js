@@ -1,54 +1,90 @@
-// import { useNavigate } from 'react-router';
-// import { useCallback, useEffect, useState } from 'react';
-// import LoginErrorDialog from '../components/ui/LoginErrorDialog';
+import { useState, useEffect, useCallback } from 'react';
+import LoginErrorDialog from '../components/ui/js/LoginErrorDialog';
 
 function NewOfferPage() {
-  // Uncomment this code when Backend code is ready
+  // const { state } = useLocation();
+  // const { selected_channel_id } = state;
 
-  /* const navigate = useNavigate();
+  const [ads, setAds] = useState([]);
   const [IsErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
 
   const hideCloseHandler = useCallback(() => setIsErrorDialogOpen(false), []);
-  const navigateBackToLogin = useCallback(() => navigate('/login'), [navigate]);
-  console.log(typeof (hideCloseHandler));
-
-  function isUserLoggedIn() {
-    fetch('/is_logged_in', {
-      method: 'GET',
-    }).then((reponse) => reponse.json().then((data) => {
-      if (data.isuserloggedin === false) {
-        setIsErrorDialogOpen(true);
-        // console.log('not logged in');
-        // navigate('/login', { state: { error: 'not_logged_in' } });
-      }
-    }));
-  }
+  const showCloseHandler = useCallback(() => setIsErrorDialogOpen(true), []);
 
   useEffect(() => {
-    isUserLoggedIn();
+    fetch('/return_ads', {
+      method: 'GET',
+    }).then((reponse) => reponse.json().then((data) => {
+      setAds(data.ads);
+    }));
   }, []);
 
   return (
     <div>
-      {IsErrorDialogOpen && <LoginErrorDialog message="User isn't logged in."
-      onCancel={hideCloseHandler} onRedirect={navigateBackToLogin} />}
-    </div>
-  ); */
+      <div style={{ padding: '5%', display: 'flex', justifyContent: 'space-between' }}>
+        <div>
+          <div>Channel Info:</div>
+          <div>Channel Name:</div>
+          <div>Number of Subscribers:</div>
+          <div>Topic:</div>
+          <div>Prefered Contact:</div>
+          <div>
+            <div>
+              Prederred price of ads:
+              <input type="text" />
+              {' '}
+              / 1k subscribers
 
-  return (
-    <div>
-      Welcome to the LoginPage!
-      <ul>
-        <li><a href="/">Go to AdsPage</a></li>
-        <li><a href="/channels">Go to ChannelsPage</a></li>
-        <li><a href="/login">Go to LoginPage</a></li>
-        <li><a href="/signup">Go to SignupPage</a></li>
-        <li><a href="/acount">Go to UserAccountPage</a></li>
-        <li><a href="/new_add">Go to NewAdPage</a></li>
-        <li><a href="/new_channel">Go to NewChannelPage</a></li>
-        <li><a href="/new_response">Go to NewResponsePage</a></li>
-        <li><a href="/new_offer">Go to NewOfferPage</a></li>
-      </ul>
+            </div>
+          </div>
+          <div>
+            Message (optional):
+            <form>
+              <textarea
+                type="text"
+                style={{ resize: 'none', width: '30vw', height: '20vh' }}
+              />
+
+            </form>
+          </div>
+          <button type="button" onClick={showCloseHandler}>Make an Offer</button>
+        </div>
+        <div>
+          {ads.map((i) => (
+            <div>
+
+              <div>
+                <input type="checkbox" />
+                creator_id:
+                {i.creator_id}
+              </div>
+              <div>
+                title:
+                {i.title}
+              </div>
+              <div>
+                topics:
+                {i.topics}
+              </div>
+              <div>
+                text:
+                {i.text}
+              </div>
+              <div>
+                reward:
+                {i.reward}
+              </div>
+              <br />
+            </div>
+          ))}
+        </div>
+      </div>
+      {IsErrorDialogOpen && (
+      <LoginErrorDialog
+        message="Placeholder. Will complete when Email processing is implemented"
+        onCancel={hideCloseHandler}
+      />
+      )}
     </div>
   );
 }
