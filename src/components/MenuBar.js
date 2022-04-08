@@ -1,7 +1,32 @@
+import { useNavigate } from 'react-router';
+import { useCallback, useState } from 'react';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import classes from './css/MenuBar.module.css';
+import LoginErrorDialog from './ui/LoginErrorDialog';
 
 function MenuBar() {
+  const navigate = useNavigate();
+  const [IsErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [RedirectFunction, setRedirectFunction] = useState({});
+
+  const navigateBackToLogin = useCallback(() => navigate('/login'), [navigate]);
+  const hideCloseHandler = useCallback(() => setIsErrorDialogOpen(false), []);
+
+  const logOut = useCallback(() => {
+    fetch('/handle_logout', {
+      method: 'POST',
+    }).then((reponse) => reponse.json().then((data) => {
+      if (data.isuserloggedin === true) {
+        setErrorMessage('Something went wrong. Please try again.');
+        setIsErrorDialogOpen(true);
+      } else {
+        setErrorMessage('User Logged out Successfully');
+        setRedirectFunction(navigateBackToLogin);
+        setIsErrorDialogOpen(true);
+      }
+    }));
+  }, [navigateBackToLogin]);
   return (
     <div>
       <header className={classes.header}>
@@ -16,9 +41,17 @@ function MenuBar() {
           <Dropdown.Item href="/new_channel">Go to NewChannelPage</Dropdown.Item>
           <Dropdown.Item href="/new_response">Go to NewResponsePage</Dropdown.Item>
           <Dropdown.Item href="/new_offer">Go to NewOfferPage</Dropdown.Item>
+          <Dropdown.Item onClick={logOut}>Log out</Dropdown.Item>
         </DropdownButton>
 
       </header>
+      {IsErrorDialogOpen && (
+      <LoginErrorDialog
+        message={errorMessage}
+        onCancel={hideCloseHandler}
+        onRedirect={RedirectFunction}
+      />
+      )}
 
     </div>
   );

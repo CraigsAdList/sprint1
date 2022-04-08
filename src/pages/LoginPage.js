@@ -11,6 +11,7 @@ function LoginPage() {
   // const navigate = useNavigate();
 
   const hideErrorDialog = useCallback(() => setIsErrorDialogOpen(false), []);
+  // const redirect = useCallback(() => navigate('/new_offer'));
 
   function setEmail(text) {
     setemailText(text.target.value);
@@ -55,6 +56,7 @@ function LoginPage() {
       <LoginErrorDialog
         message={errorMessage}
         onCancel={hideErrorDialog}
+
       />
       )}
     </div>

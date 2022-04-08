@@ -16,6 +16,12 @@ class Account(UserMixin, db.Model):
     email = db.Column(db.String(128), index=True, unique=True)
     channel_owner = db.Column(db.Boolean, default=False)
 
+    def __init__(self, username, password, email, channel_owner):
+        self.username = username
+        self.password = password
+        self.email = email
+        self.channel_owner = channel_owner
+
 
 class Ad(db.Model):
     """ Model for ads """
