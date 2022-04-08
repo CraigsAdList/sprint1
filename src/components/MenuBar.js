@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router';
 import { useCallback, useEffect, useState } from 'react';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import classes from './css/MenuBar.module.css';
-import LoginErrorDialog from './ui/LoginErrorDialog';
+import LoginErrorDialog from './ui/js/LoginErrorDialog';
 import MenuNavigation from './MenuNavigation';
 
 function MenuBar() {

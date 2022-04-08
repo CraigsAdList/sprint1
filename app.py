@@ -71,31 +71,18 @@ def handle_login():
     """Handle login"""
     if flask.request.method == "POST":
         user = Account.query.filter_by(email=flask.request.json["email"]).first()
-        if user != None and check_password_hash(
-            user.password, flask.request.json["password"]
-        ):
+        if user!=None and check_password_hash(user.password, flask.request.json["password"]):
             is_login_successful = login_user(user)
-            return flask.jsonify(
-                {"is_login_successful": is_login_successful, "error_message": ""}
-            )
-        # if password is incorrect
-        elif user != None and not check_password_hash(
-            user.password, flask.request.json["password"]
-        ):
-            return flask.jsonify(
-                {"is_login_successful": False, "error_message": "Incorrect password"}
-            )
-        # if the email is NOT present in the database, send a message saying “there is no user with this email”
-        # and give a link to sign up page
+            login_user(user)
+            return flask.jsonify({"is_login_successful": is_login_successful, "error_message": ""})
+        #if password is incorrect
+        elif user!=None and not check_password_hash(user.password, flask.request.json["password"]):
+            return flask.jsonify({"is_login_successful": False, "error_message": "Incorrect password"})
+        #if the email is NOT present in the database, send a message saying “there is no user with this email” 
+        #and give a link to sign up page
         elif user == None:
-            return flask.jsonify(
-                {
-                    "is_login_successful": False,
-                    "error_message": "No user with this email",
-                }
-            )
-
-
+            return flask.jsonify({"is_login_successful": False, "error_message": "No user with this email"})
+    
 @bp.route("/handle_signup", methods=["POST"])
 def handle_signup():
     """Handle signup"""
@@ -201,6 +188,5 @@ def make_offer():
 
 app.register_blueprint(bp)
 
-if __name__ == '__main__':
-    app.run()
+app.run(debug=True)
     

@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 // import { useNavigate } from 'react-router';
-import LoginErrorDialog from '../components/ui/LoginErrorDialog';
+import LoginErrorDialog from '../components/ui/js/LoginErrorDialog';
 
 function LoginPage() {
   const [IsErrorDialogOpen, setIsErrorDialogOpen] = useState(false);

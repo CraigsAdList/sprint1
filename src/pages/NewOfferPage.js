@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router';
 import { useCallback, useEffect, useState } from 'react';
-import LoginErrorDialog from '../components/ui/LoginErrorDialog';
+import LoginErrorDialog from '../components/ui/js/LoginErrorDialog';
 
 function NewOfferPage() {
   const navigate = useNavigate();

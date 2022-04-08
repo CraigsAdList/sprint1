@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router';
-import LoginErrorDialog from '../components/ui/LoginErrorDialog';
+import Card from '../components/ui/js/Card';
+import LoginErrorDialog from '../components/ui/js/LoginErrorDialog';
 
 function LoginPage() {
   const [IsErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
@@ -48,16 +49,21 @@ function LoginPage() {
 
   return (
     <div>
-      Welcome to the LoginPage!
-      <input type="text" onChange={setEmail} placeholder="Enter Email" />
-      <input type="password" onChange={setPassword} placeholder="Enter Password" />
-      <button type="submit" onClick={logIn}>Submit</button>
-      {IsErrorDialogOpen && (
-        <LoginErrorDialog
-          message={errorMessage}
-          onCancel={hideErrorDialog}
-        />
-      )}
+      <Card>
+        <div>
+          Welcome to the LoginPage!
+          <div><input type="text" onChange={setEmail} placeholder="Enter Username" /></div>
+          <div><input type="password" onChange={setPassword} placeholder="Enter Password" /></div>
+          <button type="submit" onClick={logIn}>Submit</button>
+          {IsErrorDialogOpen && (
+          <LoginErrorDialog
+            message={errorMessage}
+            onCancel={hideErrorDialog}
+            onRedirect={navigateToAdsPage}
+          />
+          )}
+        </div>
+      </Card>
     </div>
   );
 }
