@@ -77,19 +77,17 @@ function MenuBar() {
                 </div>
               )}
             </DropdownButton>
-          </span >
-        </div >
-      </header >
+          </span>
+        </div>
+      </header>
       {IsErrorDialogOpen && (
         <LoginErrorDialog
           message={errorMessage}
           onCancel={hideCloseHandler}
           onRedirect={RedirectFunction}
         />
-      )
-      }
-
-    </div >
+      )}
+    </div>
   );
 }
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 function UserAccountPage() {
   const [account, setAccount] = useState();
@@ -6,13 +6,14 @@ function UserAccountPage() {
   const [channels, setChannels] = useState([]);
 
   useEffect(() => {
-    fetch("/account_info", { method: "POST" }).then(response =>
-      response.json().then(data => {
-        setAccount(data.account);
-        setAds(data.ads);
-        setChannels(data.channels);
-      })
-    );
+    fetch('/account_info', { method: 'POST' })
+      .then((response => response.json())
+        .then((data => {
+          setAccount(data.account);
+          setAds(data.ads);
+          setChannels(data.channels);
+        }))
+      );
   }, [setAccount, setAds, setChannels])
 
   function handleAdDelete(i) {
@@ -30,11 +31,11 @@ function UserAccountPage() {
       <table>
         <h1>User Ads</h1>
         <tr>
-          <p>Title:</p><td>{ads.title}</td>
-          <p>Topics:</p><td>{ads.topic}</td>
-          <p>Reward:</p><td>{ads.reward}</td>
-          <p>Description</p><td>{ads.text}</td>
-          <td><button>Delete</button></td>
+          <td>Title:</td>
+          <td>Topics:</td>
+          <td>Reward:</td>
+          <td>Description</td>
+          <td><button type='submit'>Delete</button></td>
         </tr>
       </table>
       <table>
@@ -44,10 +45,10 @@ function UserAccountPage() {
           <td>Subscribers:</td>
           <td>Topics:</td>
           <td>Preferred Reward:</td>
-          <td><button>Delete</button></td>
+          <td><button type='submit'>Delete</button></td>
         </tr>
       </table>
-      <button>Log Out</button>
+      <button type='submit'>Log Out</button>
       <ul>
         <li><a href="/">Go to AdsPage</a></li>
         <li><a href="/channels">Go to ChannelsPage</a></li>

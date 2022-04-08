@@ -28,13 +28,11 @@ function LoginPage() {
       setErrorMessage('Please enter your Email and Password');
       setIsErrorDialogOpen(true);
     } else {
-      fetch('/handle_login', {
+      const requestOptions = {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: emailText, password: passwordText }),
-      });
+      };
       fetch('/handle_login', requestOptions).then((reponse) => reponse.json().then((data) => {
         if (data.is_login_successful === true) {
           setErrorMessage('Log In Successful!');
