@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // import { useNavigate } from 'react-router';
 // import { useCallback, useEffect, useState } from 'react';
 // import LoginErrorDialog from '../components/ui/LoginErrorDialog';
@@ -38,6 +39,20 @@ function NewOfferPage() {
   return (
     <div>
       Welcome to the LoginPage!
+=======
+/* eslint-disable react/jsx-one-expression-per-line */
+// Should probably enable later, for now it is just useless
+import { useLocation } from 'react-router-dom';
+// I modified this page to illustrate how to access the data passed from channels page
+// after clicking 'respond' button, you can edit it in any way you want
+
+function NewOfferPage() {
+  const { state } = useLocation();
+  return (
+    <div>
+      <p>Id of the channel {state} </p>
+      Welcome to the NewOfferPage!
+>>>>>>> origin/main
       <ul>
         <li><a href="/">Go to AdsPage</a></li>
         <li><a href="/channels">Go to ChannelsPage</a></li>

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // import { useNavigate } from 'react-router';
 // import { useState, useEffect, useCallback } from 'react';
 // import LoginErrorDialog from '../components/ui/LoginErrorDialog';
@@ -37,6 +38,20 @@ function NewResponsePage() {
   return (
     <div>
       Welcome to the LoginPage!
+=======
+/* eslint-disable react/jsx-one-expression-per-line */
+// Should probably enable later, for now it is just useless
+import { useLocation } from 'react-router-dom';
+// I modified this page to illustrate how to access the data passed from ads page
+// after clicking 'make an offer' button, you can edit it in any way you want
+
+function NewResponsePage() {
+  const { state } = useLocation();
+  return (
+    <div>
+      <p>Id of the ad {state} </p>
+      Welcome to the NewResponsePage!
+>>>>>>> origin/main
       <ul>
         <li><a href="/">Go to AdsPage</a></li>
         <li><a href="/channels">Go to ChannelsPage</a></li>

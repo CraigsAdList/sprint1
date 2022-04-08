@@ -13,7 +13,11 @@ import MenuBar from './components/MenuBar';
 
 function App() {
   return (
+<<<<<<< HEAD
     <div>
+=======
+    <BrowserRouter>
+>>>>>>> origin/main
       <MenuBar />
       <Routes>
         <Route path="/ads" element={<AdsPage />} />

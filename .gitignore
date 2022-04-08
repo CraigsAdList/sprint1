@@ -23,7 +23,13 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+<<<<<<< HEAD
 /.vscode
 /__pycache__
 
 .env
+=======
+.env
+.python-version
+__pycache__
+>>>>>>> origin/main
