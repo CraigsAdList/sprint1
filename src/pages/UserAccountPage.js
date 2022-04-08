@@ -1,28 +1,26 @@
-import { useEffect, useState } from 'react';
-
 function UserAccountPage() {
-  const [account, setAccount] = useState();
-  const [ads, setAds] = useState([]);
-  const [channels, setChannels] = useState([]);
+  /*  const [account, setAccount] = useState();
+    const [ads, setAds] = useState([]);
+    const [channels, setChannels] = useState([]); 8/
+  
+    useEffect(() => {
+      fetch('/account_info', { method: 'POST' })
+        .then(((response) => response.json()
+          .then((data) => {
+            setAccount(data.account);
+            setAds(data.ads);
+            setChannels(data.channels);
+          })
+        ));
+    }, [setAccount, setAds, setChannels])
+  
+    /* function handleAdDelete(i) {
+      setAds(...ads.splice(0, i), ...ads.splice(i + 1));
+    } */
 
-  useEffect(() => {
-    fetch('/account_info', { method: 'POST' })
-      .then((response => response.json())
-        .then((data => {
-          setAccount(data.account);
-          setAds(data.ads);
-          setChannels(data.channels);
-        }))
-      );
-  }, [setAccount, setAds, setChannels])
-
-  function handleAdDelete(i) {
-    setAds(...ads.splice(0, i), ...ads.splice(i + 1));
-  }
-
-  function handleChannelDelete(i) {
+  /* function handleChannelDelete(i) {
     setChannels(...channels.splice(0, i), ...channels.splice(i + 1));
-  }
+  } */
 
   return (
 
@@ -35,7 +33,7 @@ function UserAccountPage() {
           <td>Topics:</td>
           <td>Reward:</td>
           <td>Description</td>
-          <td><button type='submit'>Delete</button></td>
+          <td><button type="submit">Delete</button></td>
         </tr>
       </table>
       <table>
@@ -45,10 +43,10 @@ function UserAccountPage() {
           <td>Subscribers:</td>
           <td>Topics:</td>
           <td>Preferred Reward:</td>
-          <td><button type='submit'>Delete</button></td>
+          <td><button type="submit">Delete</button></td>
         </tr>
       </table>
-      <button type='submit'>Log Out</button>
+      <button type="submit">Log Out</button>
       <ul>
         <li><a href="/">Go to AdsPage</a></li>
         <li><a href="/channels">Go to ChannelsPage</a></li>
