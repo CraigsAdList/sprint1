@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 // import { useNavigate } from 'react-router';
 import LoginErrorDialog from '../components/ui/js/LoginErrorDialog';
+import Card from '../components/ui/js/Card';
 
 function LoginPage() {
   const [IsErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
@@ -65,20 +66,27 @@ function LoginPage() {
   }
 
   return (
-    <div>
-      Welcome to the SignupPage!
-      <input type="text" onChange={setUsername} placeholder="Enter Username" />
-      <input type="text" onChange={setEmail} placeholder="Enter Email" />
-      <input type="text" onChange={setPassword} placeholder="Enter Password" />
-      <input type="checkbox" onChange={setChannelOwner} placeholder="Enter Channel Owner" />
-      <button type="submit" onClick={signUp}>Submit</button>
-      {IsErrorDialogOpen && (
+    <Card>
+      <div>
+        Welcome to the SignupPage!
+        <div><input type="text" onChange={setUsername} placeholder="Enter Username" /></div>
+        <div><input type="text" onChange={setEmail} placeholder="Enter Email" /></div>
+        <div><input type="text" onChange={setPassword} placeholder="Enter Password" /></div>
+        <div>
+          <div>
+            Channel Owner
+            <input type="checkbox" onChange={setChannelOwner} placeholder="Enter Channel Owner" />
+          </div>
+        </div>
+        <button type="submit" onClick={signUp}>Submit</button>
+        {IsErrorDialogOpen && (
         <LoginErrorDialog
           message={errorMessage}
           onCancel={hideErrorDialog}
         />
-      )}
-    </div>
+        )}
+      </div>
+    </Card>
   );
 }
 

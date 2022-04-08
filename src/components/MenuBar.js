@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router';
+import { useNavigate, useLocation } from 'react-router';
 import { useCallback, useEffect, useState } from 'react';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import classes from './css/MenuBar.module.css';
@@ -7,6 +7,8 @@ import MenuNavigation from './MenuNavigation';
 
 function MenuBar() {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const [IsErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [RedirectFunction, setRedirectFunction] = useState({});
@@ -31,22 +33,24 @@ function MenuBar() {
     }));
   }, [navigateBackToLogin]);
 
-  function isUserLoggedIn() {
+  useEffect(() => {
     fetch('/is_logged_in', {
       method: 'GET',
     }).then((reponse) => reponse.json().then((data) => {
       setIsLoggedIn(data.isuserloggedin);
+      if (!data.isuserloggedin && location.pathname !== '/login' && location.pathname !== '/signup') {
+        setErrorMessage("User isn't Logged in");
+        setRedirectFunction(navigateBackToLogin);
+        setIsErrorDialogOpen(true);
+      }
     }));
-  }
-
-  useEffect(() => {
-    isUserLoggedIn();
-  }, []);
+  });
 
   return (
     <div>
       <header className={classes.header}>
-        <button type="button" className={classes.logo} onClick={navigateToAdsPage}>CraigsAdList</button>
+        {isLoggedIn && <button type="button" className={classes.logo} onClick={navigateToAdsPage}>CraigsAdList</button>}
+        {!isLoggedIn && <div className={classes.logo}>CraigsAdList</div>}
         <DropdownButton title="Menu" variant="secondary">
           {!isLoggedIn && (
           <div>
