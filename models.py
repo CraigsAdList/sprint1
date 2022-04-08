@@ -43,5 +43,3 @@ class Channel(db.Model):
     subscribers = db.Column(db.Integer, default=0)
     topics = db.Column(db.String(128), index=True, unique=True) #CSV
     preferred_reward = db.Column(db.String(128), index=True, unique=True)
-
-db.create_all()
