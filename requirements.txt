@@ -6,3 +6,5 @@ psycopg2-binary
 Flask-SQLAlchemy
 gunicorn==20.0.4
 psycopg2
+black
+pylint
