@@ -25,23 +25,26 @@ function LoginPage() {
       setErrorMessage('Please enter your Email and Password');
       setIsErrorDialogOpen(true);
     } else {
-      const requestOptions = {
+      fetch('/handle_login', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify({ email: emailText, password: passwordText }),
-      };
-      fetch('/handle_login', requestOptions).then((reponse) => reponse.json().then((data) => {
-        if (data.is_login_successful === true) {
-          setErrorMessage('Log In Successful!');
-          setIsErrorDialogOpen(true);
-        } else if (data.error_message === '') {
-          setErrorMessage('Unable to login. Please Try again.');
-          setIsErrorDialogOpen(true);
-        } else {
-          setErrorMessage(data.error_message);
-          setIsErrorDialogOpen(true);
-        }
-      }));
+      })
+        .then((reponse) => reponse.json()
+          .then((data) => {
+            if (data.is_login_successful === true) {
+              setErrorMessage('Log In Successful!');
+              setIsErrorDialogOpen(true);
+            } else if (data.error_message === '') {
+              setErrorMessage('Unable to login. Please Try again.');
+              setIsErrorDialogOpen(true);
+            } else {
+              setErrorMessage(data.error_message);
+              setIsErrorDialogOpen(true);
+            }
+          }));
     }
   }
 
@@ -50,7 +53,7 @@ function LoginPage() {
       Welcome to the LoginPage!
       <input type="text" onChange={setEmail} placeholder="Enter Email" />
       <input type="password" onChange={setPassword} placeholder="Enter Password" />
-      <button type="submit" onClick={logIn}>Submit</button>
+      <button onClick={logIn}>Submit</button>
       {IsErrorDialogOpen && (
         <LoginErrorDialog
           message={errorMessage}
