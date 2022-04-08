@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-// import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import LoginErrorDialog from '../components/ui/js/LoginErrorDialog';
 import Card from '../components/ui/js/Card';
 
@@ -10,10 +10,12 @@ function LoginPage() {
   const [passwordText, setPasswordText] = useState('');
   const [channelChecked, setChannelChecked] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [RedirectFunction, setRedirectFunction] = useState({});
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const hideErrorDialog = useCallback(() => setIsErrorDialogOpen(false), []);
+  const navigateBackToLogin = useCallback(() => navigate('/login'), [navigate]);
 
   function setUsername(text) {
     setUsernameText(text.target.value);
@@ -29,9 +31,9 @@ function LoginPage() {
 
   function setChannelOwner(checkbox) {
     if (checkbox.target.checked) {
-      setChannelChecked('true');
+      setChannelChecked(true);
     } else {
-      setChannelChecked('false');
+      setChannelChecked(false);
     }
   }
 
@@ -53,6 +55,7 @@ function LoginPage() {
       fetch('/handle_signup', requestOptions).then((reponse) => reponse.json().then((data) => {
         if (data.is_signup_successful === true) {
           setErrorMessage('Sign Up Successful!');
+          setRedirectFunction(navigateBackToLogin);
           setIsErrorDialogOpen(true);
         } else if (data.error_message === '') {
           setErrorMessage('Unable to signup. Please Try again.');
@@ -71,7 +74,7 @@ function LoginPage() {
         Welcome to the SignupPage!
         <div><input type="text" onChange={setUsername} placeholder="Enter Username" /></div>
         <div><input type="text" onChange={setEmail} placeholder="Enter Email" /></div>
-        <div><input type="text" onChange={setPassword} placeholder="Enter Password" /></div>
+        <div><input type="password" onChange={setPassword} placeholder="Enter Password" /></div>
         <div>
           <div>
             Channel Owner
@@ -79,10 +82,16 @@ function LoginPage() {
           </div>
         </div>
         <button type="submit" onClick={signUp}>Submit</button>
+        <div>
+          Already have an account?
+          {' '}
+          <a href="/login">Log in.</a>
+        </div>
         {IsErrorDialogOpen && (
         <LoginErrorDialog
           message={errorMessage}
           onCancel={hideErrorDialog}
+          onRedirect={RedirectFunction}
         />
         )}
       </div>

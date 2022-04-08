@@ -100,19 +100,20 @@ def handle_login():
 def handle_signup():
     """Handle signup"""
     if flask.request.method == "POST":
-        data = flask.request.form
-        u = Account.query.filter_by(username=data["username"]).first()
+        u = Account.query.filter_by(username=flask.request.json["username"]).first()
         if u is None:
             user = Account(
-                username=data["username"],
-                email=data["email"],
-                password=generate_password_hash(data["password"]),
+                username=flask.request.json["username"],
+                email=flask.request.json["email"],
+                password=generate_password_hash(flask.request.json["password"]),
+                channel_owner=flask.request.json["channel_owner"]
             )
             db.session.add(user)
             db.session.commit()
-            is_signup_successful = Account.query.filter_by(email=data["email"]).first()
+            new_user = Account.query.filter_by(email=flask.request.json["email"]).first()
+            is_signup_successful = new_user is not None
             return flask.jsonify({"is_signup_successful": is_signup_successful, "error_message": ""})
-        elif data["username"] == "" or data["email"] == "" or data["password"] == "":
+        elif flask.request.json["username"] == "" or flask.request.json["email"] == "" or flask.request.json["password"] == "":
             return flask.jsonify({"is_signup_successful": False, "error_message": "Fill in all the required data"})
         elif u is not None:
             return flask.jsonify({"is_signup_successful": False, "error_message": "A user with such username/email already exists"})
@@ -201,5 +202,4 @@ def make_offer():
 
 app.register_blueprint(bp)
 
-if __name__ == '__main__':
-    app.run()
+app.run(debug=True)

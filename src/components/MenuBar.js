@@ -27,6 +27,7 @@ function MenuBar() {
         setIsErrorDialogOpen(true);
       } else {
         setErrorMessage('User Logged out Successfully');
+        setIsLoggedIn(false);
         setRedirectFunction(navigateBackToLogin);
         setIsErrorDialogOpen(true);
       }
@@ -44,7 +45,11 @@ function MenuBar() {
         setIsErrorDialogOpen(true);
       }
     }));
-  });
+  // need to disable linting here because useEffect would loop indefinitely
+  // and slow down performance
+  //
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div>
