@@ -67,7 +67,7 @@ def index():
     return flask.render_template("index.html")
 
 
-@bp.route("/handle_login", methods=["POST"])
+@bp.route("/handle_login", methods=["GET"])
 def handle_login():
     """Handle login"""
     if flask.request.method == "POST":
@@ -97,7 +97,7 @@ def handle_login():
             )
 
 
-@bp.route("/handle_signup", methods=["POST"])
+@bp.route("/handle_signup", methods=["GET"])
 def handle_signup():
     """Handle signup"""
     if flask.request.method == "POST":
@@ -194,7 +194,7 @@ def add_channel():
     pass
 
 
-@bp.route("/add_ad", methods=["POST"])
+@bp.route("/add_ad", methods=["GET"])
 def add_ad():
     if request.method == "POST":
         data = flask.request.form
@@ -211,7 +211,7 @@ def add_ad():
         return flask.jsonify({"success": True})
 
 
-@bp.route("/proccess_emails", methods=["POST"])
+@bp.route("/proccess_emails", methods=["GET"])
 def proccess_emails():
     if request.method == "POST":
         data = flask.request.form
@@ -223,7 +223,7 @@ def proccess_emails():
             return flask.jsonify({"success": False})
 
 
-@bp.route("/make_response", methods=["POST"])
+@bp.route("/make_response", methods=["GET"])
 def make_response():
     if request.method == "POST":
         data = flask.request.form

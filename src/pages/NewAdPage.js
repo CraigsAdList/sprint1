@@ -25,7 +25,7 @@ function NewAdPage() {
   }, []);
   function add_ads(){
     fetch('/add_ads', {
-      method: 'POST',
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
