@@ -60,13 +60,12 @@ function NewAdPage() {
       <input type = "text" placeholder = "topics" />
       <input type = "text" placeholder = "text" />
       <input type = "text" placeholder = "reward" />
-      <input type = "checkbox" placeholder = "show my ads" />
       <button onClick = {add_ads}>Add</button>
-    
+      <input type = "checkbox"  placeholder = "show my ads"/> 
 
 
 
-       Welcome to the New Ad Page!
+       <h1>Welcome to the New Ad Page!</h1>
       <ul>
         <li><a href="/">Go to AdsPage</a></li>
         <li><a href="/channels">Go to ChannelsPage</a></li>

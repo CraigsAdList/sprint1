@@ -211,16 +211,60 @@ def add_ad():
         return flask.jsonify({"success": True})
 
 
+@bp.route("/proccess_emails", methods=["POST"])
+def proccess_emails():
+    if request.method == "POST":
+        data = flask.request.form
+        email = data["email"]
+        user = Account.query.filter_by(email=email).first()
+        if user is not None:
+            return flask.jsonify({"success": True})
+        else:
+            return flask.jsonify({"success": False})
+
+
 @bp.route("/make_response", methods=["POST"])
 def make_response():
-    """Handles response"""
-    pass
+    if request.method == "POST":
+        data = flask.request.form
+        response = Response(
+            text=data["text"],
+            ad_id=data["adId"],
+            owner_id=data["ownerId"],
+            channel_id=data["channelId"],
+            title=data["title"],
+            topics=data["topics"],
+            reward=data["reward"],
+            channel_name=data["channel_name"],
+            subscribers=data["subscribers"],
+            preferred_reward=data["preferred_reward"],
+        )
+
+        db.session.add(response)
+        db.session.commit()
+        return flask.jsonify({"success": True})
 
 
 @bp.route("/make_offer", methods=["GET"])
 def make_offer():
-    """Handles offer"""
-    pass
+    if request.method == "POST":
+        data = flask.request.form
+        response = Response(
+            text=data["text"],
+            ad_id=data["adId"],
+            owner_id=data["ownerId"],
+            channel_id=data["channelId"],
+            title=data["title"],
+            topics=data["topics"],
+            reward=data["reward"],
+            channel_name=data["channel_name"],
+            subscribers=data["subscribers"],
+            preferred_reward=data["preferred_reward"],
+        )
+
+        db.session.add(response)
+        db.session.commit()
+        return flask.jsonify({"success": True})
 
 
 app.register_blueprint(bp)
