@@ -10,10 +10,12 @@ import NewAdPage from './pages/NewAdPage';
 import NewChannelPage from './pages/NewChannelPage';
 import NewResponsePage from './pages/NewResponsePage';
 import NewOfferPage from './pages/NewOfferPage';
+import MenuBar from './components/MenuBar';
 
 function App() {
   return (
     <BrowserRouter>
+      <MenuBar />
       <Routes>
         <Route path="/" element={<AdsPage />} />
         <Route path="/channels" element={<ChannelsPage />} />
