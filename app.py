@@ -32,6 +32,7 @@ with app.app_context():
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+
 @login_manager.user_loader
 def load_user(user_id):
     """Stolen from some tutorial on flask-login. While it is not explicitly used
@@ -64,23 +65,37 @@ def index():
     # Flask will stop serving this React page correctly
     return flask.render_template("index.html")
 
+
 @bp.route("/handle_login", methods=["POST"])
 def handle_login():
     """Handle login"""
     if flask.request.method == "POST":
         user = Account.query.filter_by(email=flask.request.json["email"]).first()
-        if user!=None and check_password_hash(user.password, flask.request.json["password"]):
+        if user != None and check_password_hash(
+            user.password, flask.request.json["password"]
+        ):
             is_login_successful = login_user(user)
-            login_user(user)
-            return flask.jsonify({"is_login_successful": is_login_successful, "error_message": ""})
-        #if password is incorrect
-        elif user!=None and not check_password_hash(user.password, flask.request.json["password"]):
-            return flask.jsonify({"is_login_successful": False, "error_message": "Incorrect password"})
-        #if the email is NOT present in the database, send a message saying “there is no user with this email” 
-        #and give a link to sign up page
+            return flask.jsonify(
+                {"is_login_successful": is_login_successful, "error_message": ""}
+            )
+        # if password is incorrect
+        elif user != None and not check_password_hash(
+            user.password, flask.request.json["password"]
+        ):
+            return flask.jsonify(
+                {"is_login_successful": False, "error_message": "Incorrect password"}
+            )
+        # if the email is NOT present in the database, send a message saying “there is no user with this email”
+        # and give a link to sign up page
         elif user == None:
-            return flask.jsonify({"is_login_successful": False, "error_message": "No user with this email"})
-    
+            return flask.jsonify(
+                {
+                    "is_login_successful": False,
+                    "error_message": "No user with this email",
+                }
+            )
+
+
 @bp.route("/handle_signup", methods=["POST"])
 def handle_signup():
     """Handle signup"""
@@ -108,6 +123,7 @@ def handle_logout():
     logout_user()
     return is_logged_in()
 
+
 @bp.route("/is_logged_in", methods=["GET"])
 def is_logged_in():
     if current_user.is_authenticated == True:
@@ -115,15 +131,18 @@ def is_logged_in():
     else:
         return flask.jsonify({"isuserloggedin": False})
 
+
 @bp.route("/account_info", methods=["GET"])
 def account_info():
     """Return current user's JSON data"""
     pass
 
+
 @bp.route("/return_ads", methods=["GET"])
 def return_ads():
     """Returns JSON with all ads"""
     pass
+
 
 @bp.route("/return_channels", methods=["GET"])
 def return_channels():
@@ -134,7 +153,7 @@ def return_channels():
         channels = Channel.query.filter_by(show_channel=True).all()
         channels_data = []
         for channel in channels:
-            channel.topics = channel.topics.split(',')
+            channel.topics = channel.topics.split(",")
             channels_data.append(
                 {
                     "id": channel.id,
@@ -147,31 +166,38 @@ def return_channels():
                 }
             )
         # trying to jsonify a list of channel objects gives an error
-        return flask.jsonify({
-            "success": True,
-            "channels_data": channels_data,
-        })
+        return flask.jsonify(
+            {
+                "success": True,
+                "channels_data": channels_data,
+            }
+        )
     return flask.jsonify({"success": False})
+
 
 @bp.route("/add_channel", methods=["POST"])
 def add_channel():
     """Add channel info to database (in the first sprint it can be done only on signup)"""
     pass
 
+
 @bp.route("/add_ad", methods=["POST"])
 def add_ad():
     """Add ad info to database"""
     pass
+
 
 @bp.route("/make_response", methods=["POST"])
 def make_response():
     """Handles response"""
     pass
 
+
 @bp.route("/make_offer", methods=["GET"])
 def make_offer():
     """Handles offer"""
     pass
+
 
 app.register_blueprint(bp)
 

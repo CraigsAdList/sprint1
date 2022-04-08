@@ -49,16 +49,14 @@ function LoginPage() {
   return (
     <div>
       Welcome to the LoginPage!
-      <input type="text" onChange={setEmail} placeholder="Enter Username" />
+      <input type="text" onChange={setEmail} placeholder="Enter Email" />
       <input type="password" onChange={setPassword} placeholder="Enter Password" />
       <button type="submit" onClick={logIn}>Submit</button>
       {IsErrorDialogOpen && (
-      <LoginErrorDialog
-        message={errorMessage}
-        onCancel={hideErrorDialog}
-        onRedirect={navigateToAdsPage}
-
-      />
+        <LoginErrorDialog
+          message={errorMessage}
+          onCancel={hideErrorDialog}
+        />
       )}
     </div>
   );
