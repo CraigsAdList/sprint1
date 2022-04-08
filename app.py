@@ -139,7 +139,10 @@ def handle_logout():
 
 @bp.route("/is_logged_in", methods=["GET"])
 def is_logged_in():
-    pass
+    if current_user.is_authenticated == True:
+        return flask.jsonify({"isuserloggedin": True})
+    else:
+        return flask.jsonify({"isuserloggedin": False})
 
 
 @bp.route("/account_info", methods=["GET"])
