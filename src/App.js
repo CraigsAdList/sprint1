@@ -13,17 +13,13 @@ import MenuBar from './components/MenuBar';
 
 function App() {
   return (
-<<<<<<< HEAD
     <div>
-=======
-    <BrowserRouter>
->>>>>>> origin/main
       <MenuBar />
       <Routes>
-        <Route path="/ads" element={<AdsPage />} />
+        <Route path="/" element={<AdsPage />} />
         <Route path="/channels" element={<ChannelsPage />} />
-        <Route path="/handle_login" element={<LoginPage />} />
-        <Route path="/handle_signup" element={<SignupPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
         <Route path="/acount" element={<UserAccountPage />} />
         <Route path="/new_add" element={<NewAdPage />} />
         <Route path="/new_channel" element={<NewChannelPage />} />

@@ -1,45 +1,3 @@
-<<<<<<< HEAD
-// import { useNavigate } from 'react-router';
-// import { useCallback, useEffect, useState } from 'react';
-// import LoginErrorDialog from '../components/ui/LoginErrorDialog';
-
-function NewOfferPage() {
-  // Uncomment this code when Backend code is ready
-
-  /* const navigate = useNavigate();
-  const [IsErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
-
-  const hideCloseHandler = useCallback(() => setIsErrorDialogOpen(false), []);
-  const navigateBackToLogin = useCallback(() => navigate('/login'), [navigate]);
-  console.log(typeof (hideCloseHandler));
-
-  function isUserLoggedIn() {
-    fetch('/is_logged_in', {
-      method: 'GET',
-    }).then((reponse) => reponse.json().then((data) => {
-      if (data.isuserloggedin === false) {
-        setIsErrorDialogOpen(true);
-        // console.log('not logged in');
-        // navigate('/login', { state: { error: 'not_logged_in' } });
-      }
-    }));
-  }
-
-  useEffect(() => {
-    isUserLoggedIn();
-  }, []);
-
-  return (
-    <div>
-      {IsErrorDialogOpen && <LoginErrorDialog message="User isn't logged in."
-      onCancel={hideCloseHandler} onRedirect={navigateBackToLogin} />}
-    </div>
-  ); */
-
-  return (
-    <div>
-      Welcome to the LoginPage!
-=======
 /* eslint-disable react/jsx-one-expression-per-line */
 // Should probably enable later, for now it is just useless
 import { useLocation } from 'react-router-dom';
@@ -52,7 +10,15 @@ function NewOfferPage() {
     <div>
       <p>Id of the channel {state} </p>
       Welcome to the NewOfferPage!
->>>>>>> origin/main
+      <div>
+        <div>Channel Info:</div>
+        <div>Channel Name:</div>
+        <div>Number of Subscribers:</div>
+        <div>Topic:</div>
+        <div>Prefered Contact:</div>
+        <div>Prederred price of ads:</div>
+        <div>Message (optional):</div>
+      </div>
       <ul>
         <li><a href="/">Go to AdsPage</a></li>
         <li><a href="/channels">Go to ChannelsPage</a></li>
