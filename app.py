@@ -12,7 +12,13 @@ from flask_login import current_user, login_user, logout_user, LoginManager
 
 from flask import render_template
 
-from db_utils import createAd, deleteAllAds, getAdsByOwnerEmail, getAllAccounts, getAllAds
+from db_utils import (
+    createAd,
+    deleteAllAds,
+    getAdsByOwnerEmail,
+    getAllAccounts,
+    getAllAds,
+)
 
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -29,7 +35,7 @@ app.secret_key = os.getenv("SECRET_KEY")
 
 db.init_app(app)
 with app.app_context():
-    
+
     db.create_all()
 
 login_manager = LoginManager()
@@ -147,9 +153,11 @@ def handle_logout():
     logout_user()
     return is_logged_in()
 
+
 @app.route("/getaccounts", methods=["GET"])
 def getAccounts():
-    return flask.jsonify({"accounts":getAllAccounts()})
+    return flask.jsonify({"accounts": getAllAccounts()})
+
 
 @bp.route("/is_logged_in", methods=["GET"])
 def is_logged_in():
@@ -196,7 +204,7 @@ def return_ads():
         ads = Ad.query.filter_by(show_in_list=True).all()
         ads_data = []
         for advertisement in ads:
-            advertisement.topics = advertisement.topics.split(',')
+            advertisement.topics = advertisement.topics.split(",")
             ads_data.append(
                 {
                     "id": advertisement.id,
@@ -209,10 +217,12 @@ def return_ads():
                 }
             )
         # trying to jsonify a list of channel objects gives an error
-        return flask.jsonify({
-            "success": True,
-            "ads_data": ads_data,
-        })
+        return flask.jsonify(
+            {
+                "success": True,
+                "ads_data": ads_data,
+            }
+        )
     else:
         return flask.jsonify({"ads": getAllAds()})
 
@@ -274,13 +284,5 @@ def make_offer():
 
 app.register_blueprint(bp)
 
-<<<<<<< HEAD
 if __name__ == "__main__":
-    app.run(
-        host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", 8080)), debug=True
-    )
-=======
-if __name__ == '__main__':
     app.run()
-
->>>>>>> main
