@@ -1,6 +1,7 @@
+/* eslint-disable camelcase */
 import { useNavigate } from 'react-router';
 import { useState, useEffect, useCallback } from 'react';
-import LoginErrorDialog from '../components/ui/LoginErrorDialog';
+import LoginErrorDialog from '../components/ui/js/LoginErrorDialog';
 
 function NewAdPage() {
   const navigate = useNavigate();
@@ -9,7 +10,6 @@ function NewAdPage() {
   const hideCloseHandler = useCallback(() => setIsErrorDialogOpen(false), []);
   const navigateBackToLogin = useCallback(() => navigate('/login'), [navigate]);
 
-  
   function isUserLoggedIn() {
     fetch('/is_logged_in', {
       method: 'GET',
@@ -23,7 +23,7 @@ function NewAdPage() {
   useEffect(() => {
     isUserLoggedIn();
   }, []);
-  function add_ads(){
+  function add_ads() {
     fetch('/add_ads', {
       method: 'GET',
       headers: {
@@ -34,17 +34,14 @@ function NewAdPage() {
         topics: 'topics',
         text: 'text',
         reward: 'reward',
-       
+
       }),
     }).then((reponse) => reponse.json().then((data) => {
       if (data.isuserloggedin === false) {
         setIsErrorDialogOpen(true);
       }
     }));
-    
-
   }
-
 
   return (
     <div>
@@ -53,19 +50,17 @@ function NewAdPage() {
         message="User isn't logged in."
         onCancel={hideCloseHandler}
         onRedirect={navigateBackToLogin}
-        
+
       />
       )}
-      <input type = "text" placeholder = "title" />
-      <input type = "text" placeholder = "topics" />
-      <input type = "text" placeholder = "text" />
-      <input type = "text" placeholder = "reward" />
-      <button onClick = {add_ads}>Add</button>
-      <input type = "checkbox"  placeholder = "show my ads"/> 
+      <input type="text" placeholder="title" />
+      <input type="text" placeholder="topics" />
+      <input type="text" placeholder="text" />
+      <input type="text" placeholder="reward" />
+      <button type="submit" onClick={add_ads}>Submit</button>
+      <input type="checkbox" placeholder="show my ads" />
 
-
-
-       <h1>Welcome to the New Ad Page!</h1>
+      <h1>Welcome to the New Ad Page!</h1>
       <ul>
         <li><a href="/">Go to AdsPage</a></li>
         <li><a href="/channels">Go to ChannelsPage</a></li>
@@ -78,8 +73,7 @@ function NewAdPage() {
         <li><a href="/new_offer">Go to NewOfferPage</a></li>
       </ul>
     </div>
-  )
+  );
 }
-
 
 export default NewAdPage;
