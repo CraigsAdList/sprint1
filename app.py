@@ -10,7 +10,9 @@ import flask
 
 from flask_login import current_user, login_user, logout_user, LoginManager
 
-from flask import render_template
+from flask import render_template, request
+
+from db_utils import createAd
 
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -27,6 +29,7 @@ app.secret_key = os.getenv("SECRET_KEY")
 
 db.init_app(app)
 with app.app_context():
+
     db.create_all()
 
 login_manager = LoginManager()
@@ -50,6 +53,7 @@ bp = flask.Blueprint(
     template_folder="./static/react",
 )
 
+
 # route for serving React page
 @bp.route("/")
 @bp.route("/channels")
@@ -67,7 +71,7 @@ def index():
     return flask.render_template("index.html")
 
 
-@bp.route("/handle_login", methods=["POST"])
+@bp.route("/handle_login", methods=["GET"])
 def handle_login():
     """Handle login"""
     if flask.request.method == "POST":
@@ -97,7 +101,7 @@ def handle_login():
             )
 
 
-@bp.route("/handle_signup", methods=["POST"])
+@bp.route("/handle_signup", methods=["GET"])
 def handle_signup():
     """Handle signup"""
     if flask.request.method == "POST":
@@ -144,6 +148,11 @@ def handle_logout():
     return is_logged_in()
 
 
+@app.route("/getaccounts", methods=["GET"])
+def getAccounts():
+    return flask.jsonify({"accounts": getAllAccounts()})
+
+
 @bp.route("/is_logged_in", methods=["GET"])
 def is_logged_in():
     if current_user.is_authenticated == True:
@@ -182,8 +191,7 @@ def account_info():
 
 @bp.route("/return_ads", methods=["GET"])
 def return_ads():
-    """Returns JSON with all ads"""
-    pass
+    return flask.jsonify({"ads": getAllAds()})
 
 
 @bp.route("/return_channels", methods=["GET"])
@@ -225,25 +233,86 @@ def add_channel():
 
 @bp.route("/add_ad", methods=["POST"])
 def add_ad():
-    """Add ad info to database"""
-    pass
+    createAd(
+        flask.request.json["title"],
+        flask.request.json["topics"],
+        flask.request.json["text"],
+        flask.request.json["reward"],
+    )
+    return flask.jsonify({"success": True})
 
 
-@bp.route("/make_response", methods=["POST"])
+@bp.route("/proccess_emails", methods=["GET"])
+def proccess_emails():
+    if request.method == "POST":
+        data = flask.request.form
+        email = data["email"]
+        user = Account.query.filter_by(email=email).first()
+        if user is not None:
+            return flask.jsonify({"success": True})
+        else:
+            return flask.jsonify({"success": False})
+
+
+@bp.route("/make_response", methods=["GET"])
 def make_response():
-    """Handles response"""
-    pass
+    if request.method == "POST":
+        data = flask.request.form
+        response = Response(
+            text=data["text"],
+            ad_id=data["adId"],
+            owner_id=data["ownerId"],
+            channel_id=data["channelId"],
+            title=data["title"],
+            topics=data["topics"],
+            reward=data["reward"],
+            channel_name=data["channel_name"],
+            subscribers=data["subscribers"],
+            preferred_reward=data["preferred_reward"],
+        )
+        if response.preferred_reward > response.reward:
+            response.text = "Sorry, but your preferred reward is higher than the reward you offered. Please try again."
+            return flask.jsonify({"success": False})
+
+        db.session.add(response)
+        db.session.commit()
+        return flask.jsonify({"success": True})
 
 
 @bp.route("/make_offer", methods=["GET"])
 def make_offer():
-    """Handles offer"""
-    pass
+    if request.method == "POST":
+        data = flask.request.form
+        response = Response(
+            text=data["text"],
+            ad_id=data["adId"],
+            owner_id=data["ownerId"],
+            channel_id=data["channelId"],
+            title=data["title"],
+            topics=data["topics"],
+            reward=data["reward"],
+            channel_name=data["channel_name"],
+            subscribers=data["subscribers"],
+            preferred_reward=data["preferred_reward"],
+        )
+        if response.preferred_reward < response.reward:
+            response.text = "Sorry, but your preferred reward is higher than the reward you offered. Please try again."
+            return flask.jsonify({"success": False})
+
+        db.session.add(response)
+        db.session.commit()
+        return flask.jsonify({"success": True})
 
 
 app.register_blueprint(bp)
 
+<<<<<<< HEAD
 if __name__ == "__main__":
     app.run(
         host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", 8080)), debug=True
     )
+=======
+if __name__ == '__main__':
+    app.run()
+
+>>>>>>> main

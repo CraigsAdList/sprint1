@@ -1,9 +1,26 @@
-from models import Account, Ad, Channel
-from app import db
+from models import Account, Ad, Channel, db
+from flask_login import current_user
 
 
-def createAd(creator_id, title, topics="", text="", reward=0, show_in_list=True):
-    new_ad = Ad(creator_id, title, topics, text, reward, show_in_list)
+def getAllAccounts():
+    accounts = Account.query.all()
+    accountList = []
+    for i in accounts:
+        accountList.append(
+            {
+                "id": i.id,
+                "username": i.username,
+                "password": i.password,
+                "email": i.email,
+                "channel_owner": i.channel_owner,
+            }
+        )
+
+    return accountList
+
+
+def createAd( title, topics="", text="", reward=0, show_in_list=True):
+    new_ad = Ad(current_user.id, title, topics, text, reward, show_in_list)
 
     db.session.add(new_ad)
     db.session.commit()
@@ -16,10 +33,10 @@ def doesAdExist(ad_title):
 
 
 def createChannel(
-    owner_id, channel_name, topics, preferred_reward, subscribers=0, show_channel=True
+    channel_name, topics, preferred_reward, subscribers=0, show_channel=True
 ):
     new_channel = Channel(
-        owner_id, show_channel, channel_name, subscribers, topics, preferred_reward
+        current_user.id, show_channel, channel_name, subscribers, topics, preferred_reward
     )
 
     db.session.add(new_channel)
@@ -137,10 +154,10 @@ def getChannelsByOwnerEmail(owner_email):
 def getAllAds():
     ads = Ad.query.all()
     adsList = []
-    for i in adsList:
+    for i in ads:
         adsList.append(
             {
-                "creator_id": i.id,
+                "creator_id": i.creator_id,
                 "title": i.title,
                 "topics": i.topics,
                 "text": i.text,
@@ -162,7 +179,7 @@ def getAdsByTopic(topic):
         if topic in topic_list:
             adsList.append(
                 {
-                    "creator_id": i.id,
+                    "creator_id": i.creator_id,
                     "title": i.title,
                     "topics": i.topics,
                     "text": i.text,
@@ -179,7 +196,7 @@ def getAdsByOwnerUsername(ownername):
     for i in ads:
         adsList.append(
             {
-                "creator_id": i.id,
+                "creator_id": i.creator_id,
                 "title": i.title,
                 "topics": i.topics,
                 "text": i.text,
@@ -198,7 +215,7 @@ def getAdsByOwnerEmail(owner_email):
     for i in ads:
         adsList.append(
             {
-                "creator_id": i.id,
+                "creator_id": i.creator_id,
                 "title": i.title,
                 "topics": i.topics,
                 "text": i.text,
@@ -208,3 +225,39 @@ def getAdsByOwnerEmail(owner_email):
         )
 
     return adsList
+
+def deleteAllAds():
+    rows_deleted = Ad.query.delete()
+    db.session.commit()
+    return rows_deleted
+
+def deleteAllChannels():
+    rows_deleted = Channel.query.delete()
+    db.session.commit()
+    return rows_deleted
+
+def deleteAllAccount():
+    rows_deleted = Account.query.delete()
+    db.session.commit()
+    return rows_deleted
+
+def deleteAd(ad_id):
+    if ad_id is None:
+        return -1
+    rows_deleted = Ad.query.filter_by(id=ad_id).delete()
+    db.session.commit()
+    return rows_deleted
+
+def deleteChannel(channel_id):
+    if channel_id is None:
+        return -1
+    rows_deleted = Channel.query.filter_by(id=channel_id).delete()
+    db.session.commit()
+    return rows_deleted
+
+def deleteAccount(account_id):
+    if account_id is None:
+        return -1
+    rows_deleted = Account.query.filter_by(id=account_id).delete()
+    db.session.commit()
+    return rows_deleted

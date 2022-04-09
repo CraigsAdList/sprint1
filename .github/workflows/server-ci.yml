@@ -1,7 +1,11 @@
 # This is a basic workflow to help you get started with Actions
 
 name: Python Server CI
-
+env:
+    DATABASE_URL: ${{ secrets.DATABASE_URL }}
+    SECRET_KEY: ${{ secrets.SECRET_KEY }}
+    DOTENV: ${{ secrets.DOTENV }}
+    
 # Controls when the action will run. 
 on:
   # Triggers the workflow on push or pull request events but only for the ci-demo branch
@@ -42,7 +46,8 @@ jobs:
         
       - name: Lint files
         run: find . -name '*.py' -exec pylint {} \;
-        
+      - name: Decode .env
+        run: echo $DOTENV | base64 -d > .env
       - name: Run tests
         run: python -m unittest
 
