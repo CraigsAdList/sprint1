@@ -2,6 +2,19 @@ function NewAdPage() {
   return (
     <div>
       Welcome to the NewAdPage!
+      {IsErrorDialogOpen && (
+      <LoginErrorDialog
+        message="User isn't logged in."
+        onCancel={hideCloseHandler}
+        onRedirect={navigateBackToLogin}
+      />
+      )}
+      <input type="text" placeholder="title" />
+      <input type="text" placeholder="topics" />
+      <input type="text" placeholder="text" />
+      <input type="number" placeholder="reward" />
+      <button className="popupbox" type="submit" onClick={add_ads}>Submit</button>
+      <input type="checkbox" placeholder="show my ads" />
       <ul>
         <li><a href="/">Go to AdsPage</a></li>
         <li><a href="/channels">Go to ChannelsPage</a></li>
