@@ -10,9 +10,15 @@ import flask
 
 from flask_login import current_user, login_user, logout_user, LoginManager
 
-from flask import render_template
+from flask import render_template, request
 
-from db_utils import createAd, createChannel, deleteAllAds, getAdsByOwnerEmail, getAllAccounts, getAllAds
+from db_utils import (
+    createAd,
+    deleteAllAds,
+    getAdsByOwnerEmail,
+    getAllAccounts,
+    getAllAds,
+)
 
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -29,7 +35,7 @@ app.secret_key = os.getenv("SECRET_KEY")
 
 db.init_app(app)
 with app.app_context():
-    
+
     db.create_all()
 
 login_manager = LoginManager()
@@ -93,11 +99,18 @@ def handle_login():
             )
         # if the email is NOT present in the database, send a message saying “there is no user with this email”
         # and give a link to sign up page
-        elif user == None:
+        elif user is None:
             return flask.jsonify(
                 {
                     "is_login_successful": False,
                     "error_message": "No user with this email",
+                }
+            )
+        else:
+            return flask.jsonify(
+                {
+                    "is_login_successful": False,
+                    "error_message": "Fixing pylint",
                 }
             )
 
@@ -156,45 +169,54 @@ def is_channel_owner():
 
 @app.route("/getaccounts", methods=["GET"])
 def getAccounts():
-    return flask.jsonify({"accounts":getAllAccounts()})
+    return flask.jsonify({"accounts": getAllAccounts()})
+
 
 @bp.route("/is_logged_in", methods=["GET"])
 def is_logged_in():
+    """Check if user is logged in"""
     if current_user.is_authenticated == True:
         return flask.jsonify({"isuserloggedin": True})
     else:
         return flask.jsonify({"isuserloggedin": False})
 
 
-@bp.route("/account_info", methods=["GET", "POST"])
+@bp.route("/account_info", methods=["GET"])
 def account_info():
     """Return current user's JSON data"""
-    current_account = current_user.username
-    account = Account.query.filter_by(username=current_account).first()
-    adLog = Ad.query.filter_by(account_id=account.id).all()
-    channelLog = Channel.query.filter_by(account_id=account.id).all()
-    adList = []
-    for i in adLog:
-        adDict = {}
-        adDict["title"] = i.title
-        adDict["topics"] = i.topics
-        adDict["text"] = i.text
-        adDict["reward"] = i.reward
-        adList.append(adDict)
-    channelList = []
-    for i in channelLog:
-        channelDict = {}
-        channelDict["channel_name"] = i.channel_name
-        channelDict["subscribers"] = i.subscribers
-        channelDict["topics"] = i.topics
-        channelDict["preferred_reward"] = i.preferred_reward
-        channelList.append(channelDict)
-    return flask.jsonify({"account": account, "ads": adList, "channels": channelList})
+    pass
 
 
 @bp.route("/return_ads", methods=["GET"])
 def return_ads():
-    return flask.jsonify({"ads": getAllAds()})
+    """Returns JSON with all ads"""
+    args = flask.request.args
+    if args.get("for") == "adsPage":
+        # return channels for channels page
+        ads = Ad.query.filter_by(show_in_list=True).all()
+        ads_data = []
+        for advertisement in ads:
+            advertisement.topics = advertisement.topics.split(",")
+            ads_data.append(
+                {
+                    "id": advertisement.id,
+                    "creatorId": advertisement.creator_id,
+                    "title": advertisement.title,
+                    "topics": advertisement.topics,
+                    "text": advertisement.text,
+                    "reward": advertisement.reward,
+                    "showInList": advertisement.show_in_list,
+                }
+            )
+        # trying to jsonify a list of channel objects gives an error
+        return flask.jsonify(
+            {
+                "success": True,
+                "ads_data": ads_data,
+            }
+        )
+    else:
+        return flask.jsonify({"ads": getAllAds()})
 
 
 @bp.route("/return_channels", methods=["GET"])
@@ -236,24 +258,79 @@ def add_channel():
 
 @bp.route("/add_ad", methods=["POST"])
 def add_ad():
-    """Add ad info to database"""
-    pass
+    createAd(
+        flask.request.json["title"],
+        flask.request.json["topics"],
+        flask.request.json["text"],
+        flask.request.json["reward"],
+    )
+    return flask.jsonify({"success": True})
 
 
-@bp.route("/make_response", methods=["POST"])
+@bp.route("/proccess_emails", methods=["GET"])
+def proccess_emails():
+    if request.method == "POST":
+        data = flask.request.form
+        email = data["email"]
+        user = Account.query.filter_by(email=email).first()
+        if user is not None:
+            return flask.jsonify({"success": True})
+        else:
+            return flask.jsonify({"success": False})
+
+
+@bp.route("/make_response", methods=["GET"])
 def make_response():
-    """Handles response"""
-    pass
+    if request.method == "POST":
+        data = flask.request.form
+        response = Response(
+            text=data["text"],
+            ad_id=data["adId"],
+            owner_id=data["ownerId"],
+            channel_id=data["channelId"],
+            title=data["title"],
+            topics=data["topics"],
+            reward=data["reward"],
+            channel_name=data["channel_name"],
+            subscribers=data["subscribers"],
+            preferred_reward=data["preferred_reward"],
+        )
+        if response.preferred_reward > response.reward:
+            response.text = "Sorry, but your preferred reward is higher than the reward you offered. Please try again."
+            return flask.jsonify({"success": False})
+
+        db.session.add(response)
+        db.session.commit()
+        return flask.jsonify({"success": True})
 
 
 @bp.route("/make_offer", methods=["GET"])
 def make_offer():
-    """Handles offer"""
-    pass
+    if request.method == "POST":
+        data = flask.request.form
+        response = Response(
+            text=data["text"],
+            ad_id=data["adId"],
+            owner_id=data["ownerId"],
+            channel_id=data["channelId"],
+            title=data["title"],
+            topics=data["topics"],
+            reward=data["reward"],
+            channel_name=data["channel_name"],
+            subscribers=data["subscribers"],
+            preferred_reward=data["preferred_reward"],
+        )
+        if response.preferred_reward < response.reward:
+            response.text = "Sorry, but your preferred reward is higher than the reward you offered. Please try again."
+            return flask.jsonify({"success": False})
+
+        db.session.add(response)
+        db.session.commit()
+        return flask.jsonify({"success": True})
 
 
 app.register_blueprint(bp)
 
-if __name__ == '__main__':
-    app.run()
 
+if __name__ == "__main__":
+    app.run()
