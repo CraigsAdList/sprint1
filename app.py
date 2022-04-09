@@ -12,7 +12,13 @@ from flask_login import current_user, login_user, logout_user, LoginManager
 
 from flask import render_template, request
 
-from db_utils import createAd
+from db_utils import (
+    createAd,
+    deleteAllAds,
+    getAdsByOwnerEmail,
+    getAllAccounts,
+    getAllAds,
+)
 
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -92,11 +98,18 @@ def handle_login():
             )
         # if the email is NOT present in the database, send a message saying “there is no user with this email”
         # and give a link to sign up page
-        elif user == None:
+        elif user is None:
             return flask.jsonify(
                 {
                     "is_login_successful": False,
                     "error_message": "No user with this email",
+                }
+            )
+        else:
+            return flask.jsonify(
+                {
+                    "is_login_successful": False,
+                    "error_message": "Fixing pylint",
                 }
             )
 
@@ -155,6 +168,7 @@ def getAccounts():
 
 @bp.route("/is_logged_in", methods=["GET"])
 def is_logged_in():
+    """Check if user is logged in"""
     if current_user.is_authenticated == True:
         return flask.jsonify({"isuserloggedin": True})
     else:
@@ -169,7 +183,34 @@ def account_info():
 
 @bp.route("/return_ads", methods=["GET"])
 def return_ads():
-    return flask.jsonify({"ads": getAllAds()})
+    """Returns JSON with all ads"""
+    args = flask.request.args
+    if args.get("for") == "adsPage":
+        # return channels for channels page
+        ads = Ad.query.filter_by(show_in_list=True).all()
+        ads_data = []
+        for advertisement in ads:
+            advertisement.topics = advertisement.topics.split(",")
+            ads_data.append(
+                {
+                    "id": advertisement.id,
+                    "creatorId": advertisement.creator_id,
+                    "title": advertisement.title,
+                    "topics": advertisement.topics,
+                    "text": advertisement.text,
+                    "reward": advertisement.reward,
+                    "showInList": advertisement.show_in_list,
+                }
+            )
+        # trying to jsonify a list of channel objects gives an error
+        return flask.jsonify(
+            {
+                "success": True,
+                "ads_data": ads_data,
+            }
+        )
+    else:
+        return flask.jsonify({"ads": getAllAds()})
 
 
 @bp.route("/return_channels", methods=["GET"])
@@ -284,5 +325,6 @@ def make_offer():
 
 app.register_blueprint(bp)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+
+if __name__ == "__main__":
+    app.run()
