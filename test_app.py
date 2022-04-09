@@ -16,6 +16,7 @@ class AppTestCase(unittest.TestCase):
         self.ctx.pop()
 
     def test_ads_page(self):
+        # check that request for ads page returns valid data
         response = json.loads(
             self.client.get("/return_ads?for=adsPage").get_data(as_text=True)
         )
@@ -30,6 +31,10 @@ class AppTestCase(unittest.TestCase):
             assert type(response["ads_data"][0]["reward"]) == int
             assert type(response["ads_data"][0]["showInList"]) == bool
             assert type(response["ads_data"][0]["id"]) == int
+
+        # check that request without querys returns false
+        response = json.loads(self.client.get("/return_ads").get_data(as_text=True))
+        assert response["success"] == False
 
 
 if __name__ == "__main__":
