@@ -7,9 +7,22 @@ function NewOfferPage() {
 
   const [ads, setAds] = useState([]);
   const [IsErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
+  const [ChannelName, setChannelName] = useState('');
+  const [subscribers, setSubscibers] = useState('');
+  const [price, setPrice] = useState('');
 
   const hideCloseHandler = useCallback(() => setIsErrorDialogOpen(false), []);
   const showCloseHandler = useCallback(() => setIsErrorDialogOpen(true), []);
+
+  useEffect(() => {
+    fetch('/return_channels?for=channelsPage', {
+      method: 'GET',
+    }).then((reponse) => reponse.json().then((data) => {
+      setChannelName(data.channels_data[0].channelName);
+      setSubscibers(data.channels_data[0].subscribers);
+      setPrice(data.channels_data[0].preferredReward);
+    }));
+  }, []);
 
   useEffect(() => {
     fetch('/return_ads', {
@@ -23,16 +36,22 @@ function NewOfferPage() {
     <div>
       <div style={{ padding: '5%', display: 'flex', justifyContent: 'space-between' }}>
         <div>
-          <div>Channel Info:</div>
-          <div>Channel Name:</div>
-          <div>Number of Subscribers:</div>
+          <h>New Offer Page</h>
+          <div>Channel Info: </div>
+          <div>
+            Channel Name:
+            {ChannelName}
+          </div>
+          <div>
+            Number of Subscribers:
+            {subscribers}
+          </div>
           <div>Topic:</div>
           <div>Prefered Contact:</div>
           <div>
             <div>
               Prederred price of ads:
-              <input type="text" />
-              {' '}
+              {`${price} `}
               / 1k subscribers
 
             </div>

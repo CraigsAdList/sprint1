@@ -74,6 +74,7 @@ def index():
     """Root endpoint"""
     # NB: DO NOT add an "index.html" file in your normal templates folder
     # Flask will stop serving this React page correctly
+
     return flask.render_template("index.html")
 
 
@@ -159,6 +160,11 @@ def handle_signup():
 def handle_logout():
     logout_user()
     return is_logged_in()
+
+@bp.route("/channelowner", methods=["GET"])
+def is_channel_owner():
+    """returns true if current user is a channel owner"""
+    return flask.jsonify({"is_user_channel_owner": current_user.channel_owner})
 
 
 @app.route("/getaccounts", methods=["GET"])
