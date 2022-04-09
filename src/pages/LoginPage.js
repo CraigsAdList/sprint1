@@ -64,11 +64,11 @@ function LoginPage() {
             <a href="/signup">Sign up</a>
           </div>
           {IsErrorDialogOpen && (
-          <LoginErrorDialog
-            message={errorMessage}
-            onCancel={hideErrorDialog}
-            onRedirect={RedirectFunction}
-          />
+            <LoginErrorDialog
+              message={errorMessage}
+              onCancel={hideErrorDialog}
+              onRedirect={RedirectFunction}
+            />
           )}
         </div>
       </Card>

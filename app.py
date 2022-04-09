@@ -159,10 +159,30 @@ def is_logged_in():
         return flask.jsonify({"isuserloggedin": False})
 
 
-@bp.route("/account_info", methods=["GET"])
+@bp.route("/account_info", methods=["GET", "POST"])
 def account_info():
     """Return current user's JSON data"""
-    pass
+    current_account = current_user.username
+    account = Account.query.filter_by(username=current_account).first()
+    adLog = Ad.query.filter_by(account_id=account.id).all()
+    channelLog = Channel.query.filter_by(account_id=account.id).all()
+    adList = []
+    for i in adLog:
+        adDict = {}
+        adDict["title"] = i.title
+        adDict["topics"] = i.topics
+        adDict["text"] = i.text
+        adDict["reward"] = i.reward
+        adList.append(adDict)
+    channelList = []
+    for i in channelLog:
+        channelDict = {}
+        channelDict["channel_name"] = i.channel_name
+        channelDict["subscribers"] = i.subscribers
+        channelDict["topics"] = i.topics
+        channelDict["preferred_reward"] = i.preferred_reward
+        channelList.append(channelDict)
+    return flask.jsonify({"account": account, "ads": adList, "channels": channelList})
 
 
 @bp.route("/return_ads", methods=["GET"])
