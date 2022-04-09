@@ -12,7 +12,7 @@ from flask_login import current_user, login_user, logout_user, LoginManager
 
 from flask import render_template
 
-from db_utils import createAd, deleteAllAds, getAdsByOwnerEmail, getAllAccounts, getAllAds
+from db_utils import createAd, createChannel, deleteAllAds, getAdsByOwnerEmail, getAllAccounts, getAllAds
 
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -68,6 +68,7 @@ def index():
     """Root endpoint"""
     # NB: DO NOT add an "index.html" file in your normal templates folder
     # Flask will stop serving this React page correctly
+
     return flask.render_template("index.html")
 
 
@@ -146,6 +147,12 @@ def handle_signup():
 def handle_logout():
     logout_user()
     return is_logged_in()
+
+@bp.route("/channelowner", methods=["GET"])
+def is_channel_owner():
+    """returns true if current user is a channel owner"""
+    return flask.jsonify({"is_user_channel_owner": current_user.channel_owner})
+
 
 @app.route("/getaccounts", methods=["GET"])
 def getAccounts():

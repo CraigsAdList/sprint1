@@ -30,12 +30,7 @@ function MenuNavigation() {
         Go to NewAdPage
 
       </Dropdown.Item>
-      <Dropdown.Item href="/new_channel">
-        {location.pathname === '/new_channel' && <text>✓</text>}
-        {' '}
-        Go to NewChannelPage
 
-      </Dropdown.Item>
       <Dropdown.Item href="/new_response">
         {location.pathname === '/new_response' && <text>✓</text>}
         {' '}
