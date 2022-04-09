@@ -98,11 +98,18 @@ def handle_login():
             )
         # if the email is NOT present in the database, send a message saying “there is no user with this email”
         # and give a link to sign up page
-        elif user == None:
+        elif user is None:
             return flask.jsonify(
                 {
                     "is_login_successful": False,
                     "error_message": "No user with this email",
+                }
+            )
+        else:
+            return flask.jsonify(
+                {
+                    "is_login_successful": False,
+                    "error_message": "Fixing pylint",
                 }
             )
 
@@ -155,12 +162,14 @@ def handle_logout():
 
 
 @app.route("/getaccounts", methods=["GET"])
-def getAccounts():
+def get_ccounts():
+    """return all accounts data"""
     return flask.jsonify({"accounts": getAllAccounts()})
 
 
 @bp.route("/is_logged_in", methods=["GET"])
 def is_logged_in():
+    """Check if user is logged in"""
     if current_user.is_authenticated == True:
         return flask.jsonify({"isuserloggedin": True})
     else:
@@ -266,8 +275,32 @@ def add_channel():
 
 @bp.route("/add_ad", methods=["POST"])
 def add_ad():
+<<<<<<< HEAD
     """Add ad info to database"""
     pass
+=======
+    """Add a new ad"""
+    createAd(
+        flask.request.json["title"],
+        flask.request.json["topics"],
+        flask.request.json["text"],
+        flask.request.json["reward"],
+    )
+    return flask.jsonify({"success": True})
+
+
+@bp.route("/proccess_emails", methods=["GET"])
+def proccess_emails():
+    """Process emails"""
+    if request.method == "POST":
+        data = flask.request.form
+        email = data["email"]
+        user = Account.query.filter_by(email=email).first()
+        if user is not None:
+            return flask.jsonify({"success": True})
+        else:
+            return flask.jsonify({"success": False})
+>>>>>>> 276a95a (fixed some linting)
 
 
 @bp.route("/make_response", methods=["POST"])
