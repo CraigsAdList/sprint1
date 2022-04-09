@@ -184,7 +184,9 @@ def account_info():
         channelDict["topics"] = i.topics
         channelDict["preferred_reward"] = i.preferred_reward
         channelList.append(channelDict)
-    return flask.jsonify({"account": account, "ads": adList, "channels": channelList})
+    return flask.jsonify(
+        {"account": current_account, "ads": adList, "channels": channelList}
+    )
 
 
 @bp.route("/return_ads", methods=["GET"])
@@ -304,6 +306,13 @@ def make_offer():
 
 app.register_blueprint(bp)
 
+<<<<<<< HEAD
+if __name__ == "__main__":
+    app.run(
+        host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", 8080)), debug=True
+    )
+=======
 if __name__ == '__main__':
     app.run()
 
+>>>>>>> main
