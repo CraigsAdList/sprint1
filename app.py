@@ -175,7 +175,9 @@ def account_info():
         channelDict["topics"] = i.topics
         channelDict["preferred_reward"] = i.preferred_reward
         channelList.append(channelDict)
-    return flask.jsonify({"account": account, "ads": adList, "channels": channelList})
+    return flask.jsonify(
+        {"account": current_account, "ads": adList, "channels": channelList}
+    )
 
 
 @bp.route("/return_ads", methods=["GET"])
