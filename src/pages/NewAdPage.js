@@ -24,8 +24,10 @@ function NewAdPage() {
     isUserLoggedIn();
   }, []);
   function add_ads() {
-    fetch('/add_ads', {
-      method: 'GET',
+    const popupbox = document.getElementById('popupbox');
+    popupbox.style.display = 'block';
+    fetch('/add_ad', {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -50,16 +52,14 @@ function NewAdPage() {
         message="User isn't logged in."
         onCancel={hideCloseHandler}
         onRedirect={navigateBackToLogin}
-
       />
       )}
       <input type="text" placeholder="title" />
       <input type="text" placeholder="topics" />
       <input type="text" placeholder="text" />
-      <input type="text" placeholder="reward" />
-      <button type="submit" onClick={add_ads}>Submit</button>
+      <input type="number" placeholder="reward" />
+      <button className="popupbox" type="submit" onClick={add_ads}>Submit</button>
       <input type="checkbox" placeholder="show my ads" />
-
       <h1>Welcome to the New Ad Page!</h1>
       <ul>
         <li><a href="/">Go to AdsPage</a></li>

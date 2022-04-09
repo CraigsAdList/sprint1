@@ -12,7 +12,7 @@ from flask_login import current_user, login_user, logout_user, LoginManager
 
 from flask import render_template, request
 
-from db_utils import createAd, deleteAllAds, getAdsByOwnerEmail, getAllAccounts, getAllAds
+from db_utils import createAd
 
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -29,7 +29,7 @@ app.secret_key = os.getenv("SECRET_KEY")
 
 db.init_app(app)
 with app.app_context():
-    
+
     db.create_all()
 
 login_manager = LoginManager()
@@ -147,9 +147,11 @@ def handle_logout():
     logout_user()
     return is_logged_in()
 
+
 @app.route("/getaccounts", methods=["GET"])
 def getAccounts():
-    return flask.jsonify({"accounts":getAllAccounts()})
+    return flask.jsonify({"accounts": getAllAccounts()})
+
 
 @bp.route("/is_logged_in", methods=["GET"])
 def is_logged_in():
@@ -207,21 +209,15 @@ def add_channel():
     pass
 
 
-@bp.route("/add_ad", methods=["GET"])
+@bp.route("/add_ad", methods=["POST"])
 def add_ad():
-    if request.method == "POST":
-        data = flask.request.form
-        ad = Ad(
-            title=data["title"],
-            text=data["text"],
-            ownerId=data["ownerId"],
-            channel_id=data["channelId"],
-            reward=data["reward"],
-            topics=data["topics"],
-        )
-        db.session.add(ad)
-        db.session.commit()
-        return flask.jsonify({"success": True})
+    createAd(
+        flask.request.json["title"],
+        flask.request.json["topics"],
+        flask.request.json["text"],
+        flask.request.json["reward"],
+    )
+    return flask.jsonify({"success": True})
 
 
 @bp.route("/proccess_emails", methods=["GET"])
@@ -252,6 +248,9 @@ def make_response():
             subscribers=data["subscribers"],
             preferred_reward=data["preferred_reward"],
         )
+        if response.preferred_reward > response.reward:
+            response.text = "Sorry, but your preferred reward is higher than the reward you offered. Please try again."
+            return flask.jsonify({"success": False})
 
         db.session.add(response)
         db.session.commit()
@@ -274,6 +273,9 @@ def make_offer():
             subscribers=data["subscribers"],
             preferred_reward=data["preferred_reward"],
         )
+        if response.preferred_reward < response.reward:
+            response.text = "Sorry, but your preferred reward is higher than the reward you offered. Please try again."
+            return flask.jsonify({"success": False})
 
         db.session.add(response)
         db.session.commit()
