@@ -77,7 +77,7 @@ def index():
     return flask.render_template("index.html")
 
 
-@bp.route("/handle_login", methods=["GET"])
+@bp.route("/handle_login", methods=["POST"])
 def handle_login():
     """Handle login"""
     if flask.request.method == "POST":
@@ -114,7 +114,7 @@ def handle_login():
             )
 
 
-@bp.route("/handle_signup", methods=["GET"])
+@bp.route("/handle_signup", methods=["POST"])
 def handle_signup():
     """Handle signup"""
     if flask.request.method == "POST":
