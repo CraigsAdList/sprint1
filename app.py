@@ -12,6 +12,8 @@ from flask_login import current_user, login_user, logout_user, LoginManager
 
 from flask import render_template
 
+from db_utils import createAd, deleteAllAds, getAdsByOwnerEmail, getAllAccounts, getAllAds
+
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from dotenv import load_dotenv, find_dotenv
@@ -27,6 +29,7 @@ app.secret_key = os.getenv("SECRET_KEY")
 
 db.init_app(app)
 with app.app_context():
+    
     db.create_all()
 
 login_manager = LoginManager()
@@ -49,6 +52,7 @@ bp = flask.Blueprint(
     __name__,
     template_folder="./static/react",
 )
+
 
 # route for serving React page
 @bp.route("/")
@@ -143,6 +147,9 @@ def handle_logout():
     logout_user()
     return is_logged_in()
 
+@app.route("/getaccounts", methods=["GET"])
+def getAccounts():
+    return flask.jsonify({"accounts":getAllAccounts()})
 
 @bp.route("/is_logged_in", methods=["GET"])
 def is_logged_in():
@@ -180,8 +187,7 @@ def account_info():
 
 @bp.route("/return_ads", methods=["GET"])
 def return_ads():
-    """Returns JSON with all ads"""
-    pass
+    return flask.jsonify({"ads": getAllAds()})
 
 
 @bp.route("/return_channels", methods=["GET"])
@@ -241,4 +247,6 @@ def make_offer():
 
 app.register_blueprint(bp)
 
-app.run(debug=True)
+if __name__ == '__main__':
+    app.run()
+
